@@ -9,7 +9,7 @@ import sqlite3
 import tempfile
 import time
 
-from recall_ledger import Ledger
+from gravity_memory import Ledger
 from .run import summary_latency
 
 

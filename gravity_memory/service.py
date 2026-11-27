@@ -23,10 +23,12 @@ OPS = {
     "annotate": ("Attach validated facts to an existing original, preserving its time and citation. Use [] to dismiss.",
                  ["request_id", "original_id", "facts"],
                  {"request_id": TEXT, "original_id": TEXT, "facts": {"type": "array", "items": FACT}}),
+    "library": ("Browse memory keys and their resolved status.", [], {"limit": INT, "offset": INT}),
+    "sources": ("Browse original sources in this workspace.", [], {"limit": INT, "offset": INT}),
     "lookup": ("Resolve a named fact with source offsets, effective time and ingestion time.",
                ["key"], {"key": TEXT, **TIMES}),
     "search": ("Find current facts or explicitly search historical source passages, which may be obsolete.",
-               ["query"], {"query": TEXT, "view": {"enum": ["facts", "archive", "hybrid_archive"]}, "limit": INT, **TIMES}),
+               ["query"], {"query": TEXT, "view": {"enum": ["facts", "archive", "hybrid_archive", "auto_archive"]}, "limit": INT, **TIMES}),
     "history": ("Inspect the evidence for revisions, including superseded or revoked facts.",
                 ["key"], {"key": TEXT, "limit": INT, "offset": INT}),
     "source": ("Read an original by its request_id.", ["request_id"], {"request_id": TEXT}),
@@ -68,7 +70,7 @@ def rpc(ledger, message):
         supported = ("2025-11-25", "2025-06-18", "2025-03-26", "2024-11-05")
         version = params.get("protocolVersion")
         result = {"protocolVersion": version if version in supported else supported[0],
-                  "capabilities": {"tools": {}}, "serverInfo": {"name": "recall-ledger", "version": "0.1.0"}}
+                  "capabilities": {"tools": {}}, "serverInfo": {"name": "gravity-memory", "version": "0.2.0"}}
     elif method == "ping":
         result = {}
     elif method == "tools/list":
@@ -97,7 +99,7 @@ def stdio(ledger):
 
 def http_server(ledger, port, token):
     if not token or not token.isascii() or len(token) < 24:
-        raise ValueError("set RECALL_TOKEN to an ASCII secret of at least 24 characters")
+        raise ValueError("set GRAVITY_TOKEN to an ASCII secret of at least 24 characters")
     authorization = ("Bearer " + token).encode()
 
     class Handler(BaseHTTPRequestHandler):

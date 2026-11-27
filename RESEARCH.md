@@ -1,5 +1,7 @@
 # Who needs more reliable agent memory?
 
+This is the initial Recall Ledger investigation and its 0.1 baseline. Gravity Memory 0.2 adds the studio, model library, local inference and new evaluation runs. The updated report describes the later tests and fixes. [Gravity Memory field notes](FIELDNOTES.md)
+
 Research snapshot, November 26, 2026. **The best first customer is the engineer on call for a long-running agent whose users correct information across sessions.** A support or account-management agent is a plausible first deployment. The costly moment is concrete. A customer gives the agent a new contact channel, the agent uses the old one, and the engineer has to reconstruct what happened before they can correct it. A second customer is the self-hosting operator trying to prove which records survived an ingestion failure.
 
 ## What people are doing today

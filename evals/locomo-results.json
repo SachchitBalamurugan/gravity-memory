@@ -1,0 +1,3565 @@
+{
+  "dataset_sha256": "79fa87e90f04081343b8c8debecb80a9a6842b76a7aa537dc9fdf651ea698ff4",
+  "model": "minilm/751bff37182d3f1213fa05d7196b954e230abad9/mean-pool-v1",
+  "k": 5,
+  "questions": 120,
+  "counts": {
+    "archive": {
+      "any": 73,
+      "all": 58
+    },
+    "hybrid_archive": {
+      "any": 76,
+      "all": 58
+    }
+  },
+  "details": [
+    {
+      "conversation": "conv-26",
+      "question_index": 115,
+      "evidence": [
+        "D8:12"
+      ],
+      "archive": {
+        "hits": [
+          "D8:12",
+          "D14:14",
+          "D6:6",
+          "D14:27",
+          "D14:26"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D8:12",
+          "D14:26",
+          "D8:11",
+          "D8:8",
+          "D14:14"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-26",
+      "question_index": 53,
+      "evidence": [
+        "D13:1"
+      ],
+      "archive": {
+        "hits": [
+          "D13:1",
+          "D2:8",
+          "D19:1",
+          "D2:11",
+          "D17:7"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D2:8",
+          "D19:1",
+          "D2:10",
+          "D13:1",
+          "D17:7"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-26",
+      "question_index": 88,
+      "evidence": [
+        "D2:14"
+      ],
+      "archive": {
+        "hits": [
+          "D2:13",
+          "D17:3",
+          "D17:4",
+          "D19:1",
+          "D13:16"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D2:13",
+          "D17:3",
+          "D19:1",
+          "D2:8",
+          "D2:12"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-26",
+      "question_index": 143,
+      "evidence": [
+        "D18:1"
+      ],
+      "archive": {
+        "hits": [
+          "D18:17",
+          "D18:3",
+          "D8:27",
+          "D18:4",
+          "D12:21"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D18:3",
+          "D18:4",
+          "D18:2",
+          "D18:1",
+          "D1:4"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-26",
+      "question_index": 50,
+      "evidence": [
+        "D12:1"
+      ],
+      "archive": {
+        "hits": [
+          "D18:14",
+          "D18:7",
+          "D8:3",
+          "D15:28",
+          "D10:15"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D10:15",
+          "D18:14",
+          "D2:12",
+          "D18:8",
+          "D18:7"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-26",
+      "question_index": 151,
+      "evidence": [
+        "D18:17"
+      ],
+      "archive": {
+        "hits": [
+          "D18:17",
+          "D1:16",
+          "D8:27",
+          "D12:21",
+          "D1:17"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D18:17",
+          "D17:26",
+          "D18:3",
+          "D8:20",
+          "D18:1"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-26",
+      "question_index": 108,
+      "evidence": [
+        "D7:24"
+      ],
+      "archive": {
+        "hits": [
+          "D7:22",
+          "D7:20",
+          "D10:1",
+          "D7:21",
+          "D7:19"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D7:22",
+          "D7:20",
+          "D7:21",
+          "D7:23",
+          "D19:8"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-26",
+      "question_index": 35,
+      "evidence": [
+        "D9:1"
+      ],
+      "archive": {
+        "hits": [
+          "D13:7",
+          "D2:7",
+          "D12:11",
+          "D10:14",
+          "D10:13"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D10:12",
+          "D2:7",
+          "D6:16",
+          "D13:7",
+          "D12:16"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-26",
+      "question_index": 32,
+      "evidence": [
+        "D1:3",
+        "D3:1",
+        "D5:1",
+        "D8:17"
+      ],
+      "archive": {
+        "hits": [
+          "D10:5",
+          "D3:2",
+          "D17:20",
+          "D3:1",
+          "D9:8"
+        ],
+        "any": true,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D10:5",
+          "D1:3",
+          "D9:8",
+          "D9:6",
+          "D11:6"
+        ],
+        "any": true,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-26",
+      "question_index": 51,
+      "evidence": [
+        "D13:8",
+        "D1:12",
+        "D8:6"
+      ],
+      "archive": {
+        "hits": [
+          "D14:30",
+          "D14:31",
+          "D17:14",
+          "D1:13",
+          "D9:14"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D1:14",
+          "D1:13",
+          "D8:6",
+          "D1:15",
+          "D16:12"
+        ],
+        "any": true,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-26",
+      "question_index": 96,
+      "evidence": [
+        "D4:13"
+      ],
+      "archive": {
+        "hits": [
+          "D4:12",
+          "D1:11",
+          "D4:11",
+          "D7:7",
+          "D7:5"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D4:11",
+          "D1:11",
+          "D4:12",
+          "D7:7",
+          "D7:5"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-26",
+      "question_index": 107,
+      "evidence": [
+        "D7:21"
+      ],
+      "archive": {
+        "hits": [
+          "D7:21",
+          "D7:20",
+          "D7:19",
+          "D7:23",
+          "D7:22"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D7:21",
+          "D7:20",
+          "D7:22",
+          "D7:23",
+          "D7:19"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-30",
+      "question_index": 69,
+      "evidence": [
+        "D15:1"
+      ],
+      "archive": {
+        "hits": [
+          "D15:1",
+          "D2:5",
+          "D8:26",
+          "D11:2",
+          "D16:7"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D2:5",
+          "D15:1",
+          "D16:4",
+          "D8:26",
+          "D2:14"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-30",
+      "question_index": 27,
+      "evidence": [
+        "D14:14",
+        "D1:14",
+        "D1:16",
+        "D1:17",
+        "D9:10"
+      ],
+      "archive": {
+        "hits": [
+          "D4:14",
+          "D6:15",
+          "D1:17",
+          "D6:16",
+          "D5:21"
+        ],
+        "any": true,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D9:6",
+          "D1:17",
+          "D15:3",
+          "D1:11",
+          "D4:14"
+        ],
+        "any": true,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-30",
+      "question_index": 72,
+      "evidence": [
+        "D15:7"
+      ],
+      "archive": {
+        "hits": [
+          "D11:2",
+          "D15:3",
+          "D11:1",
+          "D15:5",
+          "D15:4"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D1:4",
+          "D15:3",
+          "D15:5",
+          "D11:5",
+          "D5:17"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-30",
+      "question_index": 46,
+      "evidence": [
+        "D2:8"
+      ],
+      "archive": {
+        "hits": [
+          "D11:1",
+          "D2:7",
+          "D2:8",
+          "D11:2",
+          "D2:6"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D2:8",
+          "D11:1",
+          "D18:20",
+          "D2:4",
+          "D4:9"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-30",
+      "question_index": 73,
+      "evidence": [
+        "D15:8"
+      ],
+      "archive": {
+        "hits": [
+          "D1:6",
+          "D9:8",
+          "D3:9",
+          "D17:7",
+          "D9:5"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D15:8",
+          "D17:7",
+          "D9:10",
+          "D1:9",
+          "D1:6"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-30",
+      "question_index": 39,
+      "evidence": [
+        "D1:9"
+      ],
+      "archive": {
+        "hits": [
+          "D1:7",
+          "D5:3",
+          "D3:6",
+          "D13:4",
+          "D16:3"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D1:7",
+          "D1:11",
+          "D9:6",
+          "D15:14",
+          "D8:8"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-30",
+      "question_index": 26,
+      "evidence": [
+        "D14:1"
+      ],
+      "archive": {
+        "hits": [
+          "D6:1",
+          "D11:2",
+          "D14:3",
+          "D15:2",
+          "D11:1"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D14:3",
+          "D13:9",
+          "D6:1",
+          "D16:4",
+          "D11:2"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-30",
+      "question_index": 76,
+      "evidence": [
+        "D15:18",
+        "D15:19"
+      ],
+      "archive": {
+        "hits": [
+          "D15:18",
+          "D15:13",
+          "D4:11",
+          "D15:4",
+          "D15:3"
+        ],
+        "any": true,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D15:18",
+          "D15:13",
+          "D15:4",
+          "D15:19",
+          "D15:5"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-30",
+      "question_index": 43,
+      "evidence": [
+        "D1:25"
+      ],
+      "archive": {
+        "hits": [
+          "D9:8",
+          "D17:6",
+          "D7:7",
+          "D13:9",
+          "D13:5"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D9:8",
+          "D7:7",
+          "D17:6",
+          "D13:5",
+          "D13:7"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-30",
+      "question_index": 64,
+      "evidence": [
+        "D12:3"
+      ],
+      "archive": {
+        "hits": [
+          "D12:2",
+          "D12:1",
+          "D6:8",
+          "D11:14",
+          "D12:3"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D12:2",
+          "D12:1",
+          "D12:3",
+          "D6:8",
+          "D5:1"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-30",
+      "question_index": 65,
+      "evidence": [
+        "D12:6"
+      ],
+      "archive": {
+        "hits": [
+          "D12:6",
+          "D12:8",
+          "D17:20",
+          "D15:17",
+          "D13:19"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D15:17",
+          "D16:4",
+          "D15:15",
+          "D19:5",
+          "D19:13"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-30",
+      "question_index": 51,
+      "evidence": [
+        "D3:6"
+      ],
+      "archive": {
+        "hits": [
+          "D3:5",
+          "D3:6",
+          "D8:7",
+          "D7:9",
+          "D5:13"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D3:5",
+          "D3:6",
+          "D10:3",
+          "D16:2",
+          "D4:2"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-41",
+      "question_index": 85,
+      "evidence": [
+        "D10:13"
+      ],
+      "archive": {
+        "hits": [
+          "D29:2",
+          "D5:6",
+          "D6:16",
+          "D24:6",
+          "D16:6"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D16:6",
+          "D6:16",
+          "D6:1",
+          "D29:1",
+          "D10:11"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-41",
+      "question_index": 45,
+      "evidence": [
+        "D24:3",
+        "D7:2"
+      ],
+      "archive": {
+        "hits": [
+          "D27:13",
+          "D9:16",
+          "D27:10",
+          "D21:13",
+          "D6:18"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D1:14",
+          "D27:13",
+          "D22:21",
+          "D17:7",
+          "D15:7"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-41",
+      "question_index": 44,
+      "evidence": [
+        "D24:6",
+        "D25:2",
+        "D28:5"
+      ],
+      "archive": {
+        "hits": [
+          "D24:6",
+          "D24:12",
+          "D28:8",
+          "D24:11",
+          "D25:2"
+        ],
+        "any": true,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D24:6",
+          "D7:7",
+          "D24:12",
+          "D7:6",
+          "D28:8"
+        ],
+        "any": true,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-41",
+      "question_index": 142,
+      "evidence": [
+        "D29:1"
+      ],
+      "archive": {
+        "hits": [
+          "D27:8",
+          "D11:10",
+          "D12:18",
+          "D27:2",
+          "D7:3"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D12:18",
+          "D27:8",
+          "D27:2",
+          "D11:10",
+          "D29:1"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-41",
+      "question_index": 118,
+      "evidence": [
+        "D21:24"
+      ],
+      "archive": {
+        "hits": [
+          "D21:22",
+          "D24:3",
+          "D21:23",
+          "D24:4",
+          "D29:3"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D21:22",
+          "D24:3",
+          "D15:3",
+          "D15:17",
+          "D15:9"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-41",
+      "question_index": 12,
+      "evidence": [
+        "D3:11",
+        "D8:18"
+      ],
+      "archive": {
+        "hits": [
+          "D19:7",
+          "D15:5",
+          "D3:11",
+          "D8:18",
+          "D31:20"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D8:18",
+          "D22:11",
+          "D13:7",
+          "D19:7",
+          "D15:5"
+        ],
+        "any": true,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-41",
+      "question_index": 29,
+      "evidence": [
+        "D15:18",
+        "D16:4"
+      ],
+      "archive": {
+        "hits": [
+          "D15:18",
+          "D12:18",
+          "D27:2",
+          "D3:5",
+          "D7:3"
+        ],
+        "any": true,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D12:18",
+          "D15:18",
+          "D29:1",
+          "D2:1",
+          "D27:2"
+        ],
+        "any": true,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-41",
+      "question_index": 9,
+      "evidence": [
+        "D5:8",
+        "D6:9"
+      ],
+      "archive": {
+        "hits": [
+          "D7:7",
+          "D6:9",
+          "D5:10",
+          "D21:7",
+          "D5:11"
+        ],
+        "any": true,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D7:7",
+          "D6:9",
+          "D21:7",
+          "D13:13",
+          "D7:6"
+        ],
+        "any": true,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-41",
+      "question_index": 65,
+      "evidence": [
+        "D1:8"
+      ],
+      "archive": {
+        "hits": [
+          "D1:6",
+          "D4:13",
+          "D1:8",
+          "D4:12",
+          "D30:16"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D1:6",
+          "D4:12",
+          "D1:8",
+          "D4:13",
+          "D1:14"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-41",
+      "question_index": 120,
+      "evidence": [
+        "D23:1"
+      ],
+      "archive": {
+        "hits": [
+          "D14:21",
+          "D23:1",
+          "D5:1",
+          "D8:4",
+          "D12:14"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D23:1",
+          "D23:2",
+          "D14:21",
+          "D21:4",
+          "D26:6"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-41",
+      "question_index": 121,
+      "evidence": [
+        "D23:1"
+      ],
+      "archive": {
+        "hits": [
+          "D23:1",
+          "D14:21",
+          "D8:4",
+          "D1:7",
+          "D21:9"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D23:1",
+          "D14:21",
+          "D23:2",
+          "D2:4",
+          "D18:6"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-41",
+      "question_index": 41,
+      "evidence": [
+        "D22:15"
+      ],
+      "archive": {
+        "hits": [
+          "D18:10",
+          "D2:22",
+          "D32:14",
+          "D2:27",
+          "D18:11"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D16:11",
+          "D3:15",
+          "D18:3",
+          "D19:22",
+          "D18:10"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-42",
+      "question_index": 106,
+      "evidence": [
+        "D4:16"
+      ],
+      "archive": {
+        "hits": [
+          "D15:1",
+          "D10:9",
+          "D11:14",
+          "D11:11",
+          "D4:18"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D10:9",
+          "D15:1",
+          "D2:3",
+          "D14:1",
+          "D13:18"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-42",
+      "question_index": 1,
+      "evidence": [
+        "D10:9",
+        "D1:10",
+        "D1:11",
+        "D1:12",
+        "D20:2",
+        "D3:4",
+        "D4:9"
+      ],
+      "archive": {
+        "hits": [
+          "D14:15",
+          "D23:4",
+          "D18:7",
+          "D14:3",
+          "D6:12"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D21:16",
+          "D23:30",
+          "D14:15",
+          "D23:4",
+          "D2:5"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-42",
+      "question_index": 56,
+      "evidence": [
+        "D26:9",
+        "D5:6"
+      ],
+      "archive": {
+        "hits": [
+          "D1:12",
+          "D2:26",
+          "D13:14",
+          "D2:14",
+          "D19:11"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D1:12",
+          "D25:24",
+          "D19:4",
+          "D2:26",
+          "D23:30"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-42",
+      "question_index": 183,
+      "evidence": [
+        "D27:23"
+      ],
+      "archive": {
+        "hits": [
+          "D1:11",
+          "D10:5",
+          "D23:7",
+          "D27:24",
+          "D16:6"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D1:11",
+          "D14:22",
+          "D9:10",
+          "D10:5",
+          "D8:13"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-42",
+      "question_index": 194,
+      "evidence": [
+        "D28:25"
+      ],
+      "archive": {
+        "hits": [
+          "D28:26",
+          "D28:24",
+          "D24:9",
+          "D12:13",
+          "D28:25"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D28:25",
+          "D25:15",
+          "D26:10",
+          "D24:9",
+          "D25:27"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-42",
+      "question_index": 198,
+      "evidence": [
+        "D29:10"
+      ],
+      "archive": {
+        "hits": [
+          "D25:3",
+          "D2:2",
+          "D25:5",
+          "D22:13",
+          "D15:15"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D28:21",
+          "D11:4",
+          "D25:5",
+          "D25:3",
+          "D15:8"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-42",
+      "question_index": 176,
+      "evidence": [
+        "D25:2"
+      ],
+      "archive": {
+        "hits": [
+          "D25:2",
+          "D3:2",
+          "D25:3",
+          "D15:1",
+          "D27:6"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D25:3",
+          "D25:2",
+          "D1:6",
+          "D3:25",
+          "D3:2"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-42",
+      "question_index": 172,
+      "evidence": [
+        "D24:15"
+      ],
+      "archive": {
+        "hits": [
+          "D24:12",
+          "D24:15",
+          "D20:2",
+          "D14:3",
+          "D26:7"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D14:3",
+          "D7:2",
+          "D24:12",
+          "D1:1",
+          "D24:15"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-42",
+      "question_index": 36,
+      "evidence": [
+        "D19:6"
+      ],
+      "archive": {
+        "hits": [
+          "D19:6",
+          "D16:8",
+          "D24:6",
+          "D9:3",
+          "D9:1"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D19:6",
+          "D19:14",
+          "D9:13",
+          "D9:1",
+          "D17:14"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-42",
+      "question_index": 118,
+      "evidence": [
+        "D10:11"
+      ],
+      "archive": {
+        "hits": [
+          "D10:9",
+          "D3:12",
+          "D22:7",
+          "D10:10",
+          "D22:20"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D10:9",
+          "D21:14",
+          "D10:10",
+          "D20:6",
+          "D3:12"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-42",
+      "question_index": 131,
+      "evidence": [
+        "D15:11"
+      ],
+      "archive": {
+        "hits": [
+          "D15:9",
+          "D15:11",
+          "D15:10",
+          "D15:14",
+          "D15:7"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D15:9",
+          "D15:11",
+          "D15:10",
+          "D15:7",
+          "D15:14"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-42",
+      "question_index": 128,
+      "evidence": [
+        "D15:3"
+      ],
+      "archive": {
+        "hits": [
+          "D8:8",
+          "D4:19",
+          "D15:3",
+          "D27:25",
+          "D28:15"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D3:25",
+          "D25:24",
+          "D8:8",
+          "D19:18",
+          "D4:19"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-43",
+      "question_index": 34,
+      "evidence": [
+        "D11:19",
+        "D26:1",
+        "D27:26"
+      ],
+      "archive": {
+        "hits": [
+          "D28:8",
+          "D11:14",
+          "D6:14",
+          "D19:5",
+          "D5:2"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D6:14",
+          "D11:17",
+          "D23:7",
+          "D28:8",
+          "D6:13"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-43",
+      "question_index": 20,
+      "evidence": [
+        "D3:19",
+        "D5:2",
+        "D6:1",
+        "D6:3"
+      ],
+      "archive": {
+        "hits": [
+          "D29:12",
+          "D6:3",
+          "D27:38",
+          "D11:8",
+          "D9:6"
+        ],
+        "any": true,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D6:3",
+          "D9:6",
+          "D11:7",
+          "D27:36",
+          "D26:7"
+        ],
+        "any": true,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-43",
+      "question_index": 88,
+      "evidence": [
+        "D6:13"
+      ],
+      "archive": {
+        "hits": [
+          "D12:19",
+          "D11:14",
+          "D28:14",
+          "D28:10",
+          "D11:5"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D28:14",
+          "D11:5",
+          "D16:10",
+          "D28:10",
+          "D3:11"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-43",
+      "question_index": 95,
+      "evidence": [
+        "D8:12"
+      ],
+      "archive": {
+        "hits": [
+          "D21:9",
+          "D26:4",
+          "D8:12",
+          "D24:11",
+          "D24:12"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D26:4",
+          "D19:18",
+          "D27:11",
+          "D21:13",
+          "D21:9"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-43",
+      "question_index": 42,
+      "evidence": [
+        "D10:4",
+        "D15:30",
+        "D15:31",
+        "D15:32"
+      ],
+      "archive": {
+        "hits": [
+          "D15:30",
+          "D15:31",
+          "D27:4",
+          "D10:4",
+          "D26:37"
+        ],
+        "any": true,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D27:4",
+          "D15:30",
+          "D14:19",
+          "D17:15",
+          "D8:35"
+        ],
+        "any": true,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-43",
+      "question_index": 96,
+      "evidence": [
+        "D8:14",
+        "D8:16"
+      ],
+      "archive": {
+        "hits": [
+          "D8:14",
+          "D21:12",
+          "D8:23",
+          "D26:31",
+          "D27:20"
+        ],
+        "any": true,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D8:14",
+          "D8:23",
+          "D8:13",
+          "D27:23",
+          "D27:25"
+        ],
+        "any": true,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-43",
+      "question_index": 120,
+      "evidence": [
+        "D14:11"
+      ],
+      "archive": {
+        "hits": [
+          "D14:7",
+          "D14:9",
+          "D14:3",
+          "D16:7",
+          "D14:8"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D14:7",
+          "D14:3",
+          "D14:9",
+          "D25:14",
+          "D14:8"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-43",
+      "question_index": 142,
+      "evidence": [
+        "D19:20"
+      ],
+      "archive": {
+        "hits": [
+          "D19:20",
+          "D19:21",
+          "D23:13",
+          "D23:12",
+          "D11:27"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D19:20",
+          "D11:27",
+          "D19:22",
+          "D11:28",
+          "D4:10"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-43",
+      "question_index": 65,
+      "evidence": [
+        "D26:28",
+        "D26:32",
+        "D27:21",
+        "D8:16",
+        "D8:18"
+      ],
+      "archive": {
+        "hits": [
+          "D26:33",
+          "D27:20",
+          "D20:17",
+          "D26:31",
+          "D12:18"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D26:33",
+          "D20:17",
+          "D8:23",
+          "D8:24",
+          "D27:21"
+        ],
+        "any": true,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-43",
+      "question_index": 63,
+      "evidence": [
+        "D26:23"
+      ],
+      "archive": {
+        "hits": [
+          "D26:23",
+          "D6:17",
+          "D20:35",
+          "D20:34",
+          "D28:13"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D26:23",
+          "D6:13",
+          "D26:21",
+          "D20:34",
+          "D28:10"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-43",
+      "question_index": 67,
+      "evidence": [
+        "D15:3",
+        "D27:37",
+        "D4:1",
+        "D6:6"
+      ],
+      "archive": {
+        "hits": [
+          "D26:12",
+          "D21:9",
+          "D12:25",
+          "D12:8",
+          "D14:23"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D21:9",
+          "D12:25",
+          "D4:11",
+          "D11:6",
+          "D23:12"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-43",
+      "question_index": 171,
+      "evidence": [
+        "D27:33"
+      ],
+      "archive": {
+        "hits": [
+          "D27:33",
+          "D27:32",
+          "D12:22",
+          "D12:20",
+          "D12:25"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D27:32",
+          "D27:33",
+          "D12:25",
+          "D11:1",
+          "D14:1"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-44",
+      "question_index": 30,
+      "evidence": [
+        "D20:1"
+      ],
+      "archive": {
+        "hits": [
+          "D20:17",
+          "D6:1",
+          "D12:4",
+          "D26:20",
+          "D20:1"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D20:1",
+          "D20:17",
+          "D21:3",
+          "D26:24",
+          "D14:1"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-44",
+      "question_index": 21,
+      "evidence": [
+        "D10:1",
+        "D14:2",
+        "D6:4"
+      ],
+      "archive": {
+        "hits": [
+          "D2:7",
+          "D2:5",
+          "D2:6",
+          "D14:2",
+          "D19:3"
+        ],
+        "any": true,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D2:5",
+          "D14:2",
+          "D28:7",
+          "D2:7",
+          "D23:14"
+        ],
+        "any": true,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-44",
+      "question_index": 89,
+      "evidence": [
+        "D17:4"
+      ],
+      "archive": {
+        "hits": [
+          "D17:4",
+          "D17:3",
+          "D26:8",
+          "D28:12",
+          "D2:24"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D23:14",
+          "D5:4",
+          "D17:4",
+          "D13:12",
+          "D17:3"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-44",
+      "question_index": 56,
+      "evidence": [
+        "D28:12",
+        "D5:5"
+      ],
+      "archive": {
+        "hits": [
+          "D24:3",
+          "D9:17",
+          "D10:11",
+          "D2:12",
+          "D21:15"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D2:12",
+          "D24:4",
+          "D24:3",
+          "D9:17",
+          "D1:8"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-44",
+      "question_index": 82,
+      "evidence": [
+        "D13:8"
+      ],
+      "archive": {
+        "hits": [
+          "D24:5",
+          "D13:8",
+          "D28:7",
+          "D13:7",
+          "D1:6"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D28:7",
+          "D24:5",
+          "D13:8",
+          "D8:20",
+          "D28:9"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-44",
+      "question_index": 75,
+      "evidence": [
+        "D8:7"
+      ],
+      "archive": {
+        "hits": [
+          "D8:1",
+          "D8:3",
+          "D8:7",
+          "D8:2",
+          "D8:6"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D8:3",
+          "D8:7",
+          "D8:1",
+          "D26:24",
+          "D24:10"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-44",
+      "question_index": 85,
+      "evidence": [
+        "D14:2"
+      ],
+      "archive": {
+        "hits": [
+          "D14:2",
+          "D14:15",
+          "D19:4",
+          "D24:2",
+          "D2:6"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D14:2",
+          "D23:6",
+          "D19:2",
+          "D28:7",
+          "D23:14"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-44",
+      "question_index": 77,
+      "evidence": [
+        "D9:5"
+      ],
+      "archive": {
+        "hits": [
+          "D9:5",
+          "D11:16",
+          "D9:1",
+          "D9:2",
+          "D7:10"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D9:1",
+          "D9:5",
+          "D11:16",
+          "D16:18",
+          "D23:14"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-44",
+      "question_index": 19,
+      "evidence": [
+        "D10:12",
+        "D12:1"
+      ],
+      "archive": {
+        "hits": [
+          "D14:23",
+          "D21:1",
+          "D9:8",
+          "D13:2",
+          "D23:9"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D9:8",
+          "D27:13",
+          "D23:13",
+          "D24:4",
+          "D27:15"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-44",
+      "question_index": 41,
+      "evidence": [
+        "D19:12",
+        "D26:13"
+      ],
+      "archive": {
+        "hits": [
+          "D19:11",
+          "D19:12",
+          "D14:18",
+          "D10:6",
+          "D23:12"
+        ],
+        "any": true,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D11:4",
+          "D14:18",
+          "D19:12",
+          "D23:12",
+          "D10:6"
+        ],
+        "any": true,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-44",
+      "question_index": 106,
+      "evidence": [
+        "D23:2"
+      ],
+      "archive": {
+        "hits": [
+          "D23:2",
+          "D19:4",
+          "D2:6",
+          "D2:7",
+          "D15:5"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D2:7",
+          "D23:2",
+          "D8:12",
+          "D19:6",
+          "D19:4"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-44",
+      "question_index": 96,
+      "evidence": [
+        "D20:25"
+      ],
+      "archive": {
+        "hits": [
+          "D20:23",
+          "D20:24",
+          "D20:16",
+          "D20:25",
+          "D20:26"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D20:23",
+          "D20:25",
+          "D20:16",
+          "D20:24",
+          "D20:27"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-47",
+      "question_index": 47,
+      "evidence": [
+        "D23:1"
+      ],
+      "archive": {
+        "hits": [
+          "D23:1",
+          "D19:16",
+          "D21:4",
+          "D4:9",
+          "D29:8"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D19:16",
+          "D29:8",
+          "D23:1",
+          "D23:5",
+          "D19:14"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-47",
+      "question_index": 24,
+      "evidence": [
+        "D13:7",
+        "D1:4",
+        "D27:2"
+      ],
+      "archive": {
+        "hits": [
+          "D3:9",
+          "D26:9",
+          "D4:9",
+          "D31:4",
+          "D28:27"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D26:9",
+          "D3:18",
+          "D3:9",
+          "D8:35",
+          "D22:5"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-47",
+      "question_index": 72,
+      "evidence": [
+        "D3:2",
+        "D3:3"
+      ],
+      "archive": {
+        "hits": [
+          "D24:13",
+          "D3:2",
+          "D24:12",
+          "D20:7",
+          "D13:12"
+        ],
+        "any": true,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D24:13",
+          "D3:2",
+          "D12:10",
+          "D24:15",
+          "D30:16"
+        ],
+        "any": true,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-47",
+      "question_index": 107,
+      "evidence": [
+        "D18:3"
+      ],
+      "archive": {
+        "hits": [
+          "D18:1",
+          "D21:4",
+          "D18:2",
+          "D4:9",
+          "D7:8"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D18:1",
+          "D11:9",
+          "D25:2",
+          "D21:4",
+          "D18:2"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-47",
+      "question_index": 84,
+      "evidence": [
+        "D7:13"
+      ],
+      "archive": {
+        "hits": [
+          "D7:13",
+          "D16:3",
+          "D12:9",
+          "D25:5",
+          "D6:11"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D6:11",
+          "D10:10",
+          "D7:13",
+          "D16:4",
+          "D16:3"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-47",
+      "question_index": 66,
+      "evidence": [
+        "D31:2"
+      ],
+      "archive": {
+        "hits": [
+          "D31:2",
+          "D20:6",
+          "D26:3",
+          "D31:4",
+          "D31:3"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D26:3",
+          "D31:4",
+          "D21:6",
+          "D31:2",
+          "D4:9"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-47",
+      "question_index": 128,
+      "evidence": [
+        "D24:8"
+      ],
+      "archive": {
+        "hits": [
+          "D24:5",
+          "D15:14",
+          "D15:19",
+          "D3:10",
+          "D24:4"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D15:19",
+          "D3:10",
+          "D24:5",
+          "D24:7",
+          "D24:6"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-47",
+      "question_index": 20,
+      "evidence": [
+        "D10:2",
+        "D29:1"
+      ],
+      "archive": {
+        "hits": [
+          "D10:5",
+          "D10:4",
+          "D29:2",
+          "D7:4",
+          "D28:28"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D10:5",
+          "D10:4",
+          "D29:2",
+          "D30:4",
+          "D18:7"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-47",
+      "question_index": 116,
+      "evidence": [
+        "D21:16"
+      ],
+      "archive": {
+        "hits": [
+          "D9:11",
+          "D3:18",
+          "D21:16",
+          "D21:17",
+          "D21:14"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D21:16",
+          "D21:17",
+          "D21:14",
+          "D23:3",
+          "D9:11"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-47",
+      "question_index": 129,
+      "evidence": [
+        "D24:13"
+      ],
+      "archive": {
+        "hits": [
+          "D24:12",
+          "D24:11",
+          "D15:14",
+          "D24:13",
+          "D26:9"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D24:11",
+          "D24:12",
+          "D2:11",
+          "D14:16",
+          "D24:15"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-47",
+      "question_index": 33,
+      "evidence": [
+        "D17:13"
+      ],
+      "archive": {
+        "hits": [
+          "D17:10",
+          "D30:9",
+          "D15:17",
+          "D8:32",
+          "D30:10"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D15:17",
+          "D6:16",
+          "D15:2",
+          "D17:10",
+          "D13:20"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-47",
+      "question_index": 105,
+      "evidence": [
+        "D16:13"
+      ],
+      "archive": {
+        "hits": [
+          "D16:11",
+          "D16:13",
+          "D20:6",
+          "D8:28",
+          "D20:15"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D16:11",
+          "D16:13",
+          "D31:1",
+          "D16:10",
+          "D16:9"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-48",
+      "question_index": 75,
+      "evidence": [
+        "D27:12"
+      ],
+      "archive": {
+        "hits": [
+          "D27:12",
+          "D14:14",
+          "D15:7",
+          "D26:9",
+          "D20:1"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D19:13",
+          "D2:29",
+          "D27:12",
+          "D14:14",
+          "D5:6"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-48",
+      "question_index": 144,
+      "evidence": [
+        "D16:6"
+      ],
+      "archive": {
+        "hits": [
+          "D28:26",
+          "D16:5",
+          "D16:4",
+          "D14:6",
+          "D4:36"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D28:26",
+          "D28:28",
+          "D14:6",
+          "D16:5",
+          "D16:4"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-48",
+      "question_index": 151,
+      "evidence": [
+        "D19:11"
+      ],
+      "archive": {
+        "hits": [
+          "D19:11",
+          "D28:9",
+          "D4:40",
+          "D15:10",
+          "D6:7"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D4:40",
+          "D12:5",
+          "D2:5",
+          "D19:11",
+          "D14:9"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-48",
+      "question_index": 131,
+      "evidence": [
+        "D12:6"
+      ],
+      "archive": {
+        "hits": [
+          "D15:20",
+          "D19:21",
+          "D12:6",
+          "D14:6",
+          "D2:22"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D15:20",
+          "D2:22",
+          "D14:6",
+          "D22:18",
+          "D16:7"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-48",
+      "question_index": 20,
+      "evidence": [
+        "D15:10",
+        "D19:10",
+        "D20:1",
+        "D2:26",
+        "D2:30"
+      ],
+      "archive": {
+        "hits": [
+          "D19:13",
+          "D15:9",
+          "D2:26",
+          "D2:22",
+          "D3:11"
+        ],
+        "any": true,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D3:11",
+          "D19:12",
+          "D2:26",
+          "D27:13",
+          "D19:13"
+        ],
+        "any": true,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-48",
+      "question_index": 107,
+      "evidence": [
+        "D4:36"
+      ],
+      "archive": {
+        "hits": [
+          "D4:36",
+          "D14:6",
+          "D4:35",
+          "D1:7",
+          "D20:6"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D28:5",
+          "D4:40",
+          "D28:1",
+          "D5:6",
+          "D4:36"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-48",
+      "question_index": 29,
+      "evidence": [
+        "D5:1"
+      ],
+      "archive": {
+        "hits": [
+          "D4:8",
+          "D5:1",
+          "D15:21",
+          "D4:35",
+          "D16:6"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D14:14",
+          "D16:6",
+          "D27:3",
+          "D23:5",
+          "D4:8"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-48",
+      "question_index": 172,
+      "evidence": [
+        "D24:10"
+      ],
+      "archive": {
+        "hits": [
+          "D24:9",
+          "D19:12",
+          "D24:8",
+          "D15:9",
+          "D2:29"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D24:9",
+          "D19:12",
+          "D24:8",
+          "D24:10",
+          "D2:26"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-48",
+      "question_index": 66,
+      "evidence": [
+        "D23:1"
+      ],
+      "archive": {
+        "hits": [
+          "D23:15",
+          "D23:1",
+          "D23:18",
+          "D24:12",
+          "D29:6"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D23:15",
+          "D23:1",
+          "D16:6",
+          "D29:6",
+          "D2:4"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-48",
+      "question_index": 54,
+      "evidence": [
+        "D16:6",
+        "D2:24",
+        "D2:28"
+      ],
+      "archive": {
+        "hits": [
+          "D28:25",
+          "D16:4",
+          "D2:22",
+          "D16:6",
+          "D28:28"
+        ],
+        "any": true,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D28:28",
+          "D16:6",
+          "D28:26",
+          "D28:25",
+          "D8:8"
+        ],
+        "any": true,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-48",
+      "question_index": 88,
+      "evidence": [
+        "D12:1",
+        "D15:1",
+        "D15:11",
+        "D28:11",
+        "D29:1"
+      ],
+      "archive": {
+        "hits": [
+          "D14:9",
+          "D26:4",
+          "D19:3",
+          "D13:14",
+          "D23:2"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D1:13",
+          "D19:3",
+          "D14:9",
+          "D15:13",
+          "D4:12"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-48",
+      "question_index": 102,
+      "evidence": [
+        "D3:1"
+      ],
+      "archive": {
+        "hits": [
+          "D14:13",
+          "D16:2",
+          "D7:10",
+          "D17:10",
+          "D20:1"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D11:1",
+          "D14:13",
+          "D25:6",
+          "D12:10",
+          "D16:2"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-49",
+      "question_index": 59,
+      "evidence": [
+        "D13:10"
+      ],
+      "archive": {
+        "hits": [
+          "D13:10",
+          "D5:16",
+          "D13:8",
+          "D8:14",
+          "D11:11"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D13:10",
+          "D13:8",
+          "D13:14",
+          "D5:16",
+          "D25:10"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-49",
+      "question_index": 89,
+      "evidence": [
+        "D3:4"
+      ],
+      "archive": {
+        "hits": [
+          "D24:20",
+          "D3:4",
+          "D3:3",
+          "D15:8",
+          "D3:5"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D24:20",
+          "D3:4",
+          "D6:8",
+          "D24:14",
+          "D8:1"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-49",
+      "question_index": 13,
+      "evidence": [
+        "D3:1"
+      ],
+      "archive": {
+        "hits": [
+          "D3:1",
+          "D24:4",
+          "D7:1",
+          "D17:20",
+          "D24:18"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D3:1",
+          "D17:20",
+          "D7:9",
+          "D24:4",
+          "D22:6"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-49",
+      "question_index": 9,
+      "evidence": [
+        "D2:1"
+      ],
+      "archive": {
+        "hits": [
+          "D1:5",
+          "D5:9",
+          "D2:1",
+          "D2:2",
+          "D20:3"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D2:1",
+          "D2:2",
+          "D19:9",
+          "D1:5",
+          "D5:9"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-49",
+      "question_index": 71,
+      "evidence": [
+        "D21:2"
+      ],
+      "archive": {
+        "hits": [
+          "D23:21",
+          "D23:20",
+          "D19:5",
+          "D2:15",
+          "D24:4"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D23:21",
+          "D23:20",
+          "D23:1",
+          "D21:4",
+          "D19:5"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-49",
+      "question_index": 102,
+      "evidence": [
+        "D7:4"
+      ],
+      "archive": {
+        "hits": [
+          "D7:6",
+          "D2:12",
+          "D7:4",
+          "D23:26",
+          "D10:7"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D7:4",
+          "D23:26",
+          "D8:7",
+          "D7:6",
+          "D23:14"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-49",
+      "question_index": 6,
+      "evidence": [
+        "D1:4",
+        "D2:1"
+      ],
+      "archive": {
+        "hits": [
+          "D8:5",
+          "D24:19",
+          "D15:6",
+          "D17:27",
+          "D6:19"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D1:22",
+          "D13:13",
+          "D8:5",
+          "D24:19",
+          "D1:6"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-49",
+      "question_index": 22,
+      "evidence": [
+        "D5:1"
+      ],
+      "archive": {
+        "hits": [
+          "D25:4",
+          "D18:6",
+          "D7:9",
+          "D7:10",
+          "D18:8"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D25:4",
+          "D21:4",
+          "D18:6",
+          "D13:13",
+          "D21:2"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-49",
+      "question_index": 133,
+      "evidence": [
+        "D19:1"
+      ],
+      "archive": {
+        "hits": [
+          "D22:10",
+          "D19:1",
+          "D6:7",
+          "D16:1",
+          "D8:10"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D24:2",
+          "D22:10",
+          "D20:1",
+          "D19:1",
+          "D19:14"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-49",
+      "question_index": 151,
+      "evidence": [
+        "D24:18"
+      ],
+      "archive": {
+        "hits": [
+          "D24:18",
+          "D7:1",
+          "D15:1",
+          "D16:6",
+          "D5:14"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D24:18",
+          "D5:14",
+          "D15:1",
+          "D24:4",
+          "D17:15"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-49",
+      "question_index": 28,
+      "evidence": [
+        "D11:7",
+        "D6:4"
+      ],
+      "archive": {
+        "hits": [
+          "D11:16",
+          "D6:3",
+          "D11:17",
+          "D5:2",
+          "D7:10"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D20:4",
+          "D11:17",
+          "D5:4",
+          "D7:10",
+          "D11:16"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-49",
+      "question_index": 62,
+      "evidence": [
+        "D14:1",
+        "D14:2",
+        "D17:2",
+        "D3:1"
+      ],
+      "archive": {
+        "hits": [
+          "D5:4",
+          "D22:8",
+          "D17:5",
+          "D2:7",
+          "D17:2"
+        ],
+        "any": true,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D3:1",
+          "D2:7",
+          "D17:2",
+          "D4:5",
+          "D16:4"
+        ],
+        "any": true,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-50",
+      "question_index": 44,
+      "evidence": [
+        "D21:1"
+      ],
+      "archive": {
+        "hits": [
+          "D21:1",
+          "D3:3",
+          "D1:13",
+          "D1:14",
+          "D10:14"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D21:1",
+          "D1:13",
+          "D17:8",
+          "D7:18",
+          "D24:5"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-50",
+      "question_index": 32,
+      "evidence": [
+        "D14:1",
+        "D17:1"
+      ],
+      "archive": {
+        "hits": [
+          "D28:43",
+          "D14:1",
+          "D17:1",
+          "D4:19",
+          "D1:16"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D14:1",
+          "D17:1",
+          "D4:7",
+          "D4:19",
+          "D14:11"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-50",
+      "question_index": 127,
+      "evidence": [
+        "D24:19"
+      ],
+      "archive": {
+        "hits": [
+          "D24:18",
+          "D7:10",
+          "D16:7",
+          "D24:19",
+          "D24:20"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D24:18",
+          "D14:5",
+          "D24:19",
+          "D24:21",
+          "D6:15"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-50",
+      "question_index": 2,
+      "evidence": [
+        "D2:10"
+      ],
+      "archive": {
+        "hits": [
+          "D2:10",
+          "D2:14",
+          "D2:11",
+          "D23:10",
+          "D7:10"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D2:10",
+          "D2:14",
+          "D2:11",
+          "D2:13",
+          "D7:1"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-50",
+      "question_index": 25,
+      "evidence": [
+        "D15:1"
+      ],
+      "archive": {
+        "hits": [
+          "D15:1",
+          "D15:2",
+          "D29:5",
+          "D6:16",
+          "D14:6"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D15:1",
+          "D15:2",
+          "D15:7",
+          "D29:5",
+          "D23:9"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-50",
+      "question_index": 62,
+      "evidence": [
+        "D14:1",
+        "D17:1"
+      ],
+      "archive": {
+        "hits": [
+          "D14:1",
+          "D17:1",
+          "D13:7",
+          "D14:2",
+          "D13:1"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D14:1",
+          "D17:1",
+          "D14:12",
+          "D13:2",
+          "D13:1"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-50",
+      "question_index": 41,
+      "evidence": [
+        "D12:2",
+        "D20:6"
+      ],
+      "archive": {
+        "hits": [
+          "D29:3",
+          "D20:7",
+          "D20:15",
+          "D25:26",
+          "D12:3"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D29:3",
+          "D20:15",
+          "D29:2",
+          "D29:12",
+          "D20:7"
+        ],
+        "any": false,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-50",
+      "question_index": 77,
+      "evidence": [
+        "D4:26"
+      ],
+      "archive": {
+        "hits": [
+          "D4:26",
+          "D25:22",
+          "D10:12",
+          "D29:7",
+          "D11:10"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D25:28",
+          "D27:3",
+          "D4:26",
+          "D25:26",
+          "D25:22"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-50",
+      "question_index": 40,
+      "evidence": [
+        "D20:6",
+        "D20:8"
+      ],
+      "archive": {
+        "hits": [
+          "D28:36",
+          "D28:39",
+          "D24:5",
+          "D29:13",
+          "D30:12"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D28:39",
+          "D28:36",
+          "D25:26",
+          "D20:8",
+          "D24:5"
+        ],
+        "any": true,
+        "all": false
+      }
+    },
+    {
+      "conversation": "conv-50",
+      "question_index": 36,
+      "evidence": [
+        "D18:1"
+      ],
+      "archive": {
+        "hits": [
+          "D18:2",
+          "D28:2",
+          "D27:11",
+          "D8:1",
+          "D8:2"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D28:2",
+          "D16:6",
+          "D8:1",
+          "D8:3",
+          "D18:1"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-50",
+      "question_index": 153,
+      "evidence": [
+        "D30:9"
+      ],
+      "archive": {
+        "hits": [
+          "D30:8",
+          "D27:4",
+          "D30:7",
+          "D30:5",
+          "D30:6"
+        ],
+        "any": false,
+        "all": false
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D30:8",
+          "D30:6",
+          "D30:7",
+          "D27:4",
+          "D30:9"
+        ],
+        "any": true,
+        "all": true
+      }
+    },
+    {
+      "conversation": "conv-50",
+      "question_index": 83,
+      "evidence": [
+        "D7:6"
+      ],
+      "archive": {
+        "hits": [
+          "D7:6",
+          "D7:5",
+          "D17:3",
+          "D21:11",
+          "D11:11"
+        ],
+        "any": true,
+        "all": true
+      },
+      "hybrid_archive": {
+        "hits": [
+          "D7:6",
+          "D7:8",
+          "D7:7",
+          "D26:9",
+          "D12:10"
+        ],
+        "any": true,
+        "all": true
+      }
+    }
+  ]
+}

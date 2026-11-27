@@ -6,8 +6,8 @@ from io import BytesIO
 from urllib.parse import urlsplit
 
 from evals.run import Remote
-from recall_ledger.review import local_chat
-from recall_ledger.semantic import OllamaEmbedder
+from gravity_memory.review import local_chat
+from gravity_memory.semantic import OllamaEmbedder
 
 
 def response(payload):
@@ -54,6 +54,6 @@ class AdapterContracts(unittest.TestCase):
             self.assertFalse(body["stream"])
             self.assertEqual(body["format"]["type"], "object")
             return response({"message": {"content": '{"facts":[]}'}, "done": True})
-        with patch("recall_ledger.semantic.urlopen", embed), patch("recall_ledger.review.urlopen", chat):
+        with patch("gravity_memory.semantic.urlopen", embed), patch("gravity_memory.review.urlopen", chat):
             self.assertEqual(OllamaEmbedder("local-v1").embed(["hello"]), [[0.1, 0.2]])
             self.assertEqual(local_chat("local-v1", "Extract", {}, {"type": "object"}), {"facts": []})

@@ -1,0 +1,32 @@
+{
+  "seed": 916032,
+  "keys": 500,
+  "revisions": 3,
+  "correct_current": 500,
+  "python": "3.12.10",
+  "sqlite": "3.49.1",
+  "platform": "Windows",
+  "counts": {
+    "documents": 1500,
+    "reviews": 0,
+    "passages": 1500,
+    "assertions": 1500,
+    "keys": 500
+  },
+  "write": {
+    "count": 1500,
+    "median_ms": 6.073,
+    "p95_ms": 9.208
+  },
+  "lookup": {
+    "count": 500,
+    "median_ms": 3.707,
+    "p95_ms": 7.153
+  },
+  "broad_search_limit_5": {
+    "count": 150,
+    "median_ms": 9.518,
+    "p95_ms": 13.603
+  },
+  "database_bytes_after_close": 1445888
+}

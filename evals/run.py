@@ -15,7 +15,7 @@ from urllib.parse import quote, urlsplit
 from urllib.request import Request, urlopen
 from uuid import uuid4
 
-from recall_ledger import Ledger
+from gravity_memory import Ledger
 
 CASES = Path(__file__).with_name("cases.json")
 
@@ -137,7 +137,7 @@ def main():
     cases = json.loads(manifest)
     engines = ["ledger", "ledger-review-gated", "transcript-bm25"] if args.engine == "local" else [args.engine]
     with tempfile.TemporaryDirectory() as directory:
-        reports = [run(engine, cases, directory, args.url, token, args.version or "0.1.0") for engine in engines]
+        reports = [run(engine, cases, directory, args.url, token, args.version or "0.2.0") for engine in engines]
     output = {"fixture_sha256": hashlib.sha256(manifest).hexdigest(),
               "environment": {"python": platform.python_version(), "sqlite": sqlite3.sqlite_version, "os": platform.system()},
               "reports": reports}

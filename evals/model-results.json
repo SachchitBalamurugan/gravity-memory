@@ -1,0 +1,105 @@
+{
+  "os": "Windows",
+  "architecture": "AMD64",
+  "source": "My preferred language is French.",
+  "runtime": "llama.cpp b12807 (Windows CPU on reference run)",
+  "revisions": {
+    "qwen-small": "9217f5db79a29953eb74d5343926648285ec7e67",
+    "smol-backup": "7be6f65f1db715fe5dc5a4634c0d459b4eed42ec",
+    "minilm": "751bff37182d3f1213fa05d7196b954e230abad9"
+  },
+  "fields": {
+    "profile.language": "Preferred language"
+  },
+  "seconds_for_routed_request": 4.05,
+  "routed": {
+    "original_id": "note",
+    "status": "proposed",
+    "facts": [
+      {
+        "key": "profile.language",
+        "quote": "My preferred language is French.",
+        "value": "French"
+      }
+    ],
+    "attempts": [
+      {
+        "model": "qwen-small",
+        "outcome": "ungrounded_proposal"
+      },
+      {
+        "model": "smol-backup",
+        "outcome": "completed"
+      }
+    ],
+    "model": "smol-backup"
+  },
+  "fallback_disabled": {
+    "original_id": "note",
+    "status": "pending_review",
+    "facts": [],
+    "attempts": [
+      {
+        "model": "qwen-small",
+        "outcome": "ungrounded_proposal"
+      }
+    ],
+    "reason": "no eligible local model produced a validated proposal"
+  },
+  "empty_cache": {
+    "original_id": "note",
+    "status": "pending_review",
+    "facts": [],
+    "attempts": [
+      {
+        "model": "qwen-small",
+        "outcome": "not_installed"
+      },
+      {
+        "model": "smol-backup",
+        "outcome": "not_installed"
+      }
+    ],
+    "reason": "no eligible local model produced a validated proposal"
+  },
+  "original_retained": true,
+  "after_operator_confirmation": "French",
+  "offline_review_transfer": {
+    "bytes": 295927801,
+    "import": {
+      "installed": "smol-backup",
+      "revision": "7be6f65f1db715fe5dc5a4634c0d459b4eed42ec",
+      "runtime_included": true
+    },
+    "runtime_ready": true,
+    "result": {
+      "original_id": "note",
+      "status": "proposed",
+      "facts": [
+        {
+          "key": "profile.language",
+          "quote": "My preferred language is French.",
+          "value": "French"
+        }
+      ],
+      "attempts": [
+        {
+          "model": "qwen-small",
+          "outcome": "not_installed"
+        },
+        {
+          "model": "smol-backup",
+          "outcome": "completed"
+        }
+      ],
+      "model": "smol-backup"
+    }
+  },
+  "offline_transfer": {
+    "bytes": 23696160,
+    "verified_files": {
+      "onnx/model_quantized.onnx": "afdb6f1a0e45b715d0bb9b11772f032c399babd23bfc31fed1c170afc848bdb1",
+      "tokenizer.json": "da0e79933b9ed51798a3ae27893d3c5fa4a201126cef75586296df9b4d2c62a0"
+    }
+  }
+}

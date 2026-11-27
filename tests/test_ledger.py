@@ -11,9 +11,9 @@ from pathlib import Path
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
-from recall_ledger import Conflict, Ledger
-from recall_ledger.semantic import index_passages
-from recall_ledger.service import dispatch, http_server
+from gravity_memory import Conflict, Ledger
+from gravity_memory.semantic import index_passages
+from gravity_memory.service import dispatch, http_server
 
 
 def date(month):
@@ -122,8 +122,8 @@ class StoreTests(unittest.TestCase):
         # First write commits; terminate the process inside the second write, after raw insertion.
         code = """
 import os, sys
-from recall_ledger import Ledger
-import recall_ledger.store as store
+from gravity_memory import Ledger
+import gravity_memory.store as store
 db = Ledger(sys.argv[1])
 db.remember('complete','I live in Lima.','chat',role='user')
 def crash(body):
@@ -188,9 +188,9 @@ db.remember('half','I live in Cork.','chat',role='user')
         self.assertEqual(rows[0]["key"], "work.employer")
 
     def test_manual_review_roundtrip_keeps_original_time_and_offsets(self):
-        initial = self.note("raw", "These days I call Malmö home.")
+        initial = self.note("raw", "I unpacked my last box in Malmö.")
         self.assertEqual(self.db.pending()[0]["request_id"], "raw")
-        facts = [{"key": "home.city", "value": "Malmö", "quote": "I call Malmö home"}]
+        facts = [{"key": "home.city", "value": "Malmö", "quote": "last box in Malmö"}]
         self.db.annotate("review-1", "raw", facts)
         self.assertTrue(self.db.annotate("review-1", "raw", facts)["replayed"])
         self.assertFalse(self.db.pending())
@@ -245,7 +245,7 @@ db.remember('half','I live in Cork.','chat',role='user')
         lines = [message(1, "initialize", protocolVersion="2025-11-25"),
                  '{"jsonrpc":"2.0","method":"notifications/initialized"}', message(2, "tools/list"),
                  message(3, "tools/call", name="lookup", arguments={"key": "profile.name"})]
-        result = subprocess.run([sys.executable, "-m", "recall_ledger", "--db", str(self.path), "mcp"],
+        result = subprocess.run([sys.executable, "-m", "gravity_memory", "--db", str(self.path), "mcp"],
                                 input="\n".join(lines) + "\n", text=True, capture_output=True, check=True)
         init, listing, hit = map(json.loads, result.stdout.splitlines())
         self.assertIn("tools", init["result"]["capabilities"])

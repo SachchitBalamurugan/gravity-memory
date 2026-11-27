@@ -7,9 +7,9 @@ import unittest
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from recall_ledger import Ledger
-from recall_ledger.importers import import_records
-from recall_ledger.review import suggest
+from gravity_memory import Ledger
+from gravity_memory.importers import import_records
+from gravity_memory.review import suggest
 
 
 class Workflows(unittest.TestCase):
@@ -54,19 +54,19 @@ class Workflows(unittest.TestCase):
 
     def test_review_gate_can_withhold_a_stale_fact_until_newer_turn_is_classified(self):
         self.db.remember("a", "I live in Oslo.", "chat", role="user", effective_at="2025-01-01T00:00:00Z")
-        at = self.db.remember("b", "These days I call Ghent home.", "chat", role="user",
+        at = self.db.remember("b", "My new lease was signed in Ghent.", "chat", role="user",
                               effective_at="2025-02-01T00:00:00Z")["recorded_at"]
         self.assertEqual(self.db.lookup("home.city")["value"], "Oslo")
         held = self.db.lookup("home.city", require_review=True)
         self.assertEqual((held["status"], held["pending_sources"]), ("pending_review", ["b"]))
         self.assertEqual(self.db.search("Oslo", require_review=True)["results"], [])
-        self.db.annotate("r", "b", [{"key":"home.city", "value":"Ghent", "quote":"call Ghent home"}])
+        self.db.annotate("r", "b", [{"key":"home.city", "value":"Ghent", "quote":"signed in Ghent"}])
         self.assertEqual(self.db.lookup("home.city", require_review=True)["value"], "Ghent")
         self.assertEqual(self.db.lookup("home.city", require_review=True, known_at=at)["status"], "pending_review")
 
     def test_cli_review_export_restore(self):
         def cli(path, *args):
-            run = subprocess.run([sys.executable, "-m", "recall_ledger", "--db", str(path), *args],
+            run = subprocess.run([sys.executable, "-m", "gravity_memory", "--db", str(path), *args],
                                  capture_output=True, text=True, check=True)
             return json.loads(run.stdout) if run.stdout else None
         src = self.folder / "first.sqlite"
@@ -91,7 +91,7 @@ class Workflows(unittest.TestCase):
         with self.assertRaises(ValueError):
             restored.restore([lines[0], {**lines[1], "source": "changed"}, lines[2]])
         self.assertIsNone(restored.source("a"))
-        with patch("recall_ledger.store.extract", side_effect=AssertionError("restore must keep historical facts")):
+        with patch("gravity_memory.store.extract", side_effect=AssertionError("restore must keep historical facts")):
             restored.restore(lines)
         self.assertEqual(restored.lookup("home.city"), self.db.lookup("home.city"))
 

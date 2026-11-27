@@ -1,0 +1,1125 @@
+{
+  "fixture_sha256": "8530c89049a9cf189ccf5829a2f709599449d6e5c80ef77ec1ea440341b985c6",
+  "environment": {
+    "python": "3.12.10",
+    "sqlite": "3.49.1",
+    "os": "Windows"
+  },
+  "reports": [
+    {
+      "engine": "ledger",
+      "version": "0.2.0",
+      "run_scope_prefix": null,
+      "counts": {
+        "answerable": 18,
+        "hit_at_1": 12,
+        "hit_at_3": 12,
+        "obsolete_probes": 11,
+        "stale_at_3": 0,
+        "unknown": 9,
+        "empty_on_unknown": 9
+      },
+      "write": {
+        "count": 25,
+        "median_ms": 7.151,
+        "p95_ms": 10.518
+      },
+      "read": {
+        "count": 27,
+        "median_ms": 1.637,
+        "p95_ms": 2.945
+      },
+      "queries": [
+        {
+          "case": "contact-change",
+          "query": "What is my preferred contact channel?",
+          "gold": "Signal",
+          "obsolete": [
+            "email"
+          ],
+          "hits": [
+            "Please contact me via Signal"
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "contact-change",
+          "query": "How should you reach me?",
+          "gold": "Signal",
+          "obsolete": [
+            "email"
+          ],
+          "hits": [
+            "Please contact me via Signal"
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "contact-change",
+          "query": "What is my shoe size?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "move-and-job",
+          "query": "What city do I live in?",
+          "gold": "Bremen",
+          "obsolete": [
+            "Utrecht"
+          ],
+          "hits": [
+            "I moved to Bremen"
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "move-and-job",
+          "query": "Who is my employer?",
+          "gold": "Northbank",
+          "obsolete": [
+            "Windmill"
+          ],
+          "hits": [
+            "I now work at Northbank"
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "move-and-job",
+          "query": "Which company employs me?",
+          "gold": "Northbank",
+          "obsolete": [
+            "Windmill"
+          ],
+          "hits": [
+            "I now work at Northbank"
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "move-and-job",
+          "query": "What is my timezone?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "identity",
+          "query": "What is my name?",
+          "gold": "Carmen",
+          "obsolete": [
+            "Lucía"
+          ],
+          "hits": [
+            "My name is Carmen"
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "identity",
+          "query": "Which timezone am I in?",
+          "gold": "Europe/Madrid",
+          "obsolete": [],
+          "hits": [
+            "My time zone is Europe/Madrid"
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "identity",
+          "query": "What language do I speak?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "domain-decisions",
+          "query": "Where does the export service run?",
+          "gold": "Cedar",
+          "obsolete": [
+            "Alder"
+          ],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "domain-decisions",
+          "query": "What is the escalation code?",
+          "gold": "PEBBLE-42",
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "domain-decisions",
+          "query": "What is our recovery interval?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "conditional",
+          "query": "How do I want to be contacted when on call?",
+          "gold": "PagerDuty",
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "conditional",
+          "query": "How should I be contacted outside work?",
+          "gold": "Matrix",
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "conditional",
+          "query": "What is my home city?",
+          "gold": "Ghent",
+          "obsolete": [
+            "Cork"
+          ],
+          "hits": [
+            "These days I call Ghent home"
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "project-handoff",
+          "query": "Where do shipments leave from?",
+          "gold": "Antwerp",
+          "obsolete": [
+            "Rotterdam"
+          ],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "project-handoff",
+          "query": "When does the inventory reconciliation job start?",
+          "gold": "04:15",
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "project-handoff",
+          "query": "What is the warehouse phone number?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "conditional-correction",
+          "query": "What city do I live in?",
+          "gold": "Denver",
+          "obsolete": [
+            "Phoenix"
+          ],
+          "hits": [
+            "I live in Denver"
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "conditional-correction",
+          "query": "Where am I employed?",
+          "gold": "Skylark",
+          "obsolete": [],
+          "hits": [
+            "I work at Skylark"
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "conditional-correction",
+          "query": "Who owns my apartment?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "paraphrased-move",
+          "query": "What city do I live in?",
+          "gold": "Ghent",
+          "obsolete": [
+            "Oslo"
+          ],
+          "hits": [
+            "These days I call Ghent home"
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "paraphrased-move",
+          "query": "What city does my sister live in?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "overlapping-subjects",
+          "query": "Who is my employer?",
+          "gold": "Moonbeam",
+          "obsolete": [],
+          "hits": [
+            "I work at Moonbeam"
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "overlapping-subjects",
+          "query": "What is my manager's name?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "overlapping-subjects",
+          "query": "Which company employs my brother?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        }
+      ]
+    },
+    {
+      "engine": "ledger-review-gated",
+      "version": "0.2.0",
+      "run_scope_prefix": null,
+      "counts": {
+        "answerable": 18,
+        "hit_at_1": 11,
+        "hit_at_3": 11,
+        "obsolete_probes": 11,
+        "stale_at_3": 0,
+        "unknown": 9,
+        "empty_on_unknown": 9
+      },
+      "write": {
+        "count": 25,
+        "median_ms": 5.587,
+        "p95_ms": 7.695
+      },
+      "read": {
+        "count": 27,
+        "median_ms": 1.178,
+        "p95_ms": 2.019
+      },
+      "queries": [
+        {
+          "case": "contact-change",
+          "query": "What is my preferred contact channel?",
+          "gold": "Signal",
+          "obsolete": [
+            "email"
+          ],
+          "hits": [
+            "Please contact me via Signal"
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "contact-change",
+          "query": "How should you reach me?",
+          "gold": "Signal",
+          "obsolete": [
+            "email"
+          ],
+          "hits": [
+            "Please contact me via Signal"
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "contact-change",
+          "query": "What is my shoe size?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "move-and-job",
+          "query": "What city do I live in?",
+          "gold": "Bremen",
+          "obsolete": [
+            "Utrecht"
+          ],
+          "hits": [
+            "I moved to Bremen"
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "move-and-job",
+          "query": "Who is my employer?",
+          "gold": "Northbank",
+          "obsolete": [
+            "Windmill"
+          ],
+          "hits": [
+            "I now work at Northbank"
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "move-and-job",
+          "query": "Which company employs me?",
+          "gold": "Northbank",
+          "obsolete": [
+            "Windmill"
+          ],
+          "hits": [
+            "I now work at Northbank"
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "move-and-job",
+          "query": "What is my timezone?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "identity",
+          "query": "What is my name?",
+          "gold": "Carmen",
+          "obsolete": [
+            "Lucía"
+          ],
+          "hits": [
+            "My name is Carmen"
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "identity",
+          "query": "Which timezone am I in?",
+          "gold": "Europe/Madrid",
+          "obsolete": [],
+          "hits": [
+            "My time zone is Europe/Madrid"
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "identity",
+          "query": "What language do I speak?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "domain-decisions",
+          "query": "Where does the export service run?",
+          "gold": "Cedar",
+          "obsolete": [
+            "Alder"
+          ],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "domain-decisions",
+          "query": "What is the escalation code?",
+          "gold": "PEBBLE-42",
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "domain-decisions",
+          "query": "What is our recovery interval?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "conditional",
+          "query": "How do I want to be contacted when on call?",
+          "gold": "PagerDuty",
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "conditional",
+          "query": "How should I be contacted outside work?",
+          "gold": "Matrix",
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "conditional",
+          "query": "What is my home city?",
+          "gold": "Ghent",
+          "obsolete": [
+            "Cork"
+          ],
+          "hits": [
+            "These days I call Ghent home"
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "project-handoff",
+          "query": "Where do shipments leave from?",
+          "gold": "Antwerp",
+          "obsolete": [
+            "Rotterdam"
+          ],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "project-handoff",
+          "query": "When does the inventory reconciliation job start?",
+          "gold": "04:15",
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "project-handoff",
+          "query": "What is the warehouse phone number?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "conditional-correction",
+          "query": "What city do I live in?",
+          "gold": "Denver",
+          "obsolete": [
+            "Phoenix"
+          ],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "conditional-correction",
+          "query": "Where am I employed?",
+          "gold": "Skylark",
+          "obsolete": [],
+          "hits": [
+            "I work at Skylark"
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "conditional-correction",
+          "query": "Who owns my apartment?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "paraphrased-move",
+          "query": "What city do I live in?",
+          "gold": "Ghent",
+          "obsolete": [
+            "Oslo"
+          ],
+          "hits": [
+            "These days I call Ghent home"
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "paraphrased-move",
+          "query": "What city does my sister live in?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "overlapping-subjects",
+          "query": "Who is my employer?",
+          "gold": "Moonbeam",
+          "obsolete": [],
+          "hits": [
+            "I work at Moonbeam"
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "overlapping-subjects",
+          "query": "What is my manager's name?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "overlapping-subjects",
+          "query": "Which company employs my brother?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        }
+      ]
+    },
+    {
+      "engine": "transcript-bm25",
+      "version": "0.2.0",
+      "run_scope_prefix": null,
+      "counts": {
+        "answerable": 18,
+        "hit_at_1": 7,
+        "hit_at_3": 10,
+        "obsolete_probes": 11,
+        "stale_at_3": 8,
+        "unknown": 9,
+        "empty_on_unknown": 8
+      },
+      "write": {
+        "count": 25,
+        "median_ms": 5.009,
+        "p95_ms": 5.85
+      },
+      "read": {
+        "count": 27,
+        "median_ms": 1.1,
+        "p95_ms": 2.072
+      },
+      "queries": [
+        {
+          "case": "contact-change",
+          "query": "What is my preferred contact channel?",
+          "gold": "Signal",
+          "obsolete": [
+            "email"
+          ],
+          "hits": [
+            "My preferred contact channel is email.",
+            "Please contact me via Signal."
+          ],
+          "hit_at_1": false,
+          "hit_at_3": true,
+          "stale_at_3": true,
+          "empty": false
+        },
+        {
+          "case": "contact-change",
+          "query": "How should you reach me?",
+          "gold": "Signal",
+          "obsolete": [
+            "email"
+          ],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "contact-change",
+          "query": "What is my shoe size?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "move-and-job",
+          "query": "What city do I live in?",
+          "gold": "Bremen",
+          "obsolete": [
+            "Utrecht"
+          ],
+          "hits": [
+            "I live in Utrecht."
+          ],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": true,
+          "empty": false
+        },
+        {
+          "case": "move-and-job",
+          "query": "Who is my employer?",
+          "gold": "Northbank",
+          "obsolete": [
+            "Windmill"
+          ],
+          "hits": [
+            "My employer is Windmill."
+          ],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": true,
+          "empty": false
+        },
+        {
+          "case": "move-and-job",
+          "query": "Which company employs me?",
+          "gold": "Northbank",
+          "obsolete": [
+            "Windmill"
+          ],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "move-and-job",
+          "query": "What is my timezone?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "identity",
+          "query": "What is my name?",
+          "gold": "Carmen",
+          "obsolete": [
+            "Lucía"
+          ],
+          "hits": [
+            "My name is Carmen.",
+            "My name is Lucía."
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": true,
+          "empty": false
+        },
+        {
+          "case": "identity",
+          "query": "Which timezone am I in?",
+          "gold": "Europe/Madrid",
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "identity",
+          "query": "What language do I speak?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "domain-decisions",
+          "query": "Where does the export service run?",
+          "gold": "Cedar",
+          "obsolete": [
+            "Alder"
+          ],
+          "hits": [
+            "The export service runs on Alder.",
+            "After the migration the export service runs on Cedar."
+          ],
+          "hit_at_1": false,
+          "hit_at_3": true,
+          "stale_at_3": true,
+          "empty": false
+        },
+        {
+          "case": "domain-decisions",
+          "query": "What is the escalation code?",
+          "gold": "PEBBLE-42",
+          "obsolete": [],
+          "hits": [
+            "The support team's escalation code is PEBBLE-42."
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "domain-decisions",
+          "query": "What is our recovery interval?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "conditional",
+          "query": "How do I want to be contacted when on call?",
+          "gold": "PagerDuty",
+          "obsolete": [],
+          "hits": [
+            "On call I prefer PagerDuty. Outside work please use Matrix.",
+            "I used to work in Cork. These days I call Ghent home."
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "conditional",
+          "query": "How should I be contacted outside work?",
+          "gold": "Matrix",
+          "obsolete": [],
+          "hits": [
+            "On call I prefer PagerDuty. Outside work please use Matrix.",
+            "I used to work in Cork. These days I call Ghent home."
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "conditional",
+          "query": "What is my home city?",
+          "gold": "Ghent",
+          "obsolete": [
+            "Cork"
+          ],
+          "hits": [
+            "I used to work in Cork. These days I call Ghent home."
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": true,
+          "empty": false
+        },
+        {
+          "case": "project-handoff",
+          "query": "Where do shipments leave from?",
+          "gold": "Antwerp",
+          "obsolete": [
+            "Rotterdam"
+          ],
+          "hits": [
+            "Shipments leave from Rotterdam.",
+            "We have since moved shipments to Antwerp."
+          ],
+          "hit_at_1": false,
+          "hit_at_3": true,
+          "stale_at_3": true,
+          "empty": false
+        },
+        {
+          "case": "project-handoff",
+          "query": "When does the inventory reconciliation job start?",
+          "gold": "04:15",
+          "obsolete": [],
+          "hits": [
+            "The inventory reconciliation job starts at 04:15 UTC."
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "project-handoff",
+          "query": "What is the warehouse phone number?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "conditional-correction",
+          "query": "What city do I live in?",
+          "gold": "Denver",
+          "obsolete": [
+            "Phoenix"
+          ],
+          "hits": [
+            "I live in Denver."
+          ],
+          "hit_at_1": true,
+          "hit_at_3": true,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "conditional-correction",
+          "query": "Where am I employed?",
+          "gold": "Skylark",
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "conditional-correction",
+          "query": "Who owns my apartment?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "paraphrased-move",
+          "query": "What city do I live in?",
+          "gold": "Ghent",
+          "obsolete": [
+            "Oslo"
+          ],
+          "hits": [
+            "I live in Oslo."
+          ],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": true,
+          "empty": false
+        },
+        {
+          "case": "paraphrased-move",
+          "query": "What city does my sister live in?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [
+            "I live in Oslo."
+          ],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": false
+        },
+        {
+          "case": "overlapping-subjects",
+          "query": "Who is my employer?",
+          "gold": "Moonbeam",
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "overlapping-subjects",
+          "query": "What is my manager's name?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        },
+        {
+          "case": "overlapping-subjects",
+          "query": "Which company employs my brother?",
+          "gold": null,
+          "obsolete": [],
+          "hits": [],
+          "hit_at_1": false,
+          "hit_at_3": false,
+          "stale_at_3": false,
+          "empty": true
+        }
+      ]
+    }
+  ]
+}

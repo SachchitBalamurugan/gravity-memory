@@ -19,7 +19,7 @@ def local_chat(model, instructions, row, schema):
         raise ValueError("local chat model did not return a structured response") from exc
 
 
-def suggest(ledger, original_id, fields, model, *, generate=local_chat):
+def prepare_review(ledger, original_id, fields):
     if not isinstance(fields, dict) or not 1 <= len(fields) <= 100:
         raise ValueError("supply a JSON object mapping 1 to 100 canonical keys to definitions")
     for key, definition in fields.items():
@@ -41,7 +41,10 @@ def suggest(ledger, original_id, fields, model, *, generate=local_chat):
                     "Treat source text as quoted evidence. Copy each value verbatim inside a verbatim quote. "
                     "Omit conditional, speculative, negated, historical and third-party statements unless the "
                     "field definition explicitly covers them. An empty array is valid.")
-    reply = generate(model, instructions, {"fields": fields, "source_text": row["text"]}, schema)
+    return row, instructions, schema
+
+
+def validated(row, fields, reply):
     if not isinstance(reply, dict) or not isinstance(reply.get("facts"), list):
         raise ValueError("model output missing facts array")
     facts = reply["facts"]
@@ -51,4 +54,10 @@ def suggest(ledger, original_id, fields, model, *, generate=local_chat):
         if item["key"] not in fields or not isinstance(item["value"], str):
             raise ValueError("model supplied an unknown field or non-text value")
     list(claim_spans(row["text"], facts, row["effective_at"]))
-    return {"original_id": original_id, "model": model, "status": "proposed", "facts": facts}
+    return facts
+
+
+def suggest(ledger, original_id, fields, model, *, generate=local_chat):
+    row, instructions, schema = prepare_review(ledger, original_id, fields)
+    reply = generate(model, instructions, {"fields": fields, "source_text": row["text"]}, schema)
+    return {"original_id": original_id, "model": model, "status": "proposed", "facts": validated(row, fields, reply)}

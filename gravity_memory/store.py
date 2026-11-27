@@ -8,7 +8,7 @@ from contextlib import closing, contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .language import KEY, extract, search_terms
+from .language import KEY, extract, search_terms, subject_scope
 from .schema import SCHEMA
 
 
@@ -246,6 +246,9 @@ class Ledger:
         """Return lexical matches in the requested view. Archive hits are explicitly labeled historical evidence."""
         if type(require_review) is not bool or (require_review and view != "facts"):
             raise ValueError("require_review is a boolean option for fact search")
+        if view == "auto_archive":
+            from .runtime import archive_search
+            return archive_search(self, query, limit, as_of, known_at)
         if view == "hybrid_archive":
             from .semantic import hybrid
             return hybrid(self, query, limit, as_of, known_at)
@@ -281,9 +284,14 @@ class Ledger:
                   )
                 ORDER BY rank, f.id DESC
             """, (match, at, known, at, known))
+            subject = subject_scope(query)
             seen = set()
             for row in matches:
                 key = row["key"]
+                if subject == "self" and key.startswith("relation."):
+                    continue
+                if subject and subject != "self" and not key.startswith(subject):
+                    continue
                 if key in seen:
                     continue
                 seen.add(key)
@@ -294,6 +302,15 @@ class Ledger:
                     break
         return result
 
+    _UNREVIEWED = """json_extract(d.payload,'$.origin') IS NULL
+        AND NOT EXISTS(SELECT 1 FROM facts f WHERE f.doc=d.id)
+        AND NOT EXISTS(SELECT 1 FROM documents r WHERE json_extract(r.payload,'$.origin')=d.request_id)"""
+
+    def pending_count(self):
+        with self._tx() as db:
+            return db.execute(f"""SELECT COUNT(*) FROM documents d
+                WHERE json_extract(d.payload,'$.role') IN ('user','document') AND {self._UNREVIEWED}""").fetchone()[0]
+
     def pending(self, *, role="user", limit=50, offset=0):
         """List original turns or documents with no promoted facts that still need a decision."""
         if role not in ("user", "document"):
@@ -301,11 +318,9 @@ class Ledger:
         if type(offset) is not int or not 0 <= offset < 2**63:
             raise ValueError("offset must be a nonnegative integer")
         with self._tx() as db:
-            return [dict(row) for row in db.execute("""
+            return [dict(row) for row in db.execute(f"""
                 SELECT d.request_id,d.source,d.effective_at,substr(d.body,1,240) AS preview
-                FROM documents d WHERE json_extract(d.payload,'$.role')=? AND json_extract(d.payload,'$.origin') IS NULL
-                    AND NOT EXISTS(SELECT 1 FROM facts f WHERE f.doc=d.id)
-                    AND NOT EXISTS(SELECT 1 FROM documents r WHERE json_extract(r.payload,'$.origin')=d.request_id)
+                FROM documents d WHERE json_extract(d.payload,'$.role')=? AND {self._UNREVIEWED}
                 ORDER BY d.id LIMIT ? OFFSET ?
             """, (role, limit_rows(limit), offset))]
 
@@ -327,6 +342,29 @@ class Ledger:
         return self._remember(db, request_id, row["body"], row["source"], "document",
                               row["effective_at"], facts, recorded, origin=original_id)
 
+    def library(self, *, limit=40, offset=0):
+        limit_rows(limit)
+        if type(offset) is not int or not 0 <= offset < 2**63:
+            raise ValueError("invalid offset")
+        with self._tx() as db:
+            rows = db.execute("SELECT key,max(doc) AS newest FROM facts GROUP BY key ORDER BY newest DESC,key LIMIT ? OFFSET ?",
+                              (limit + 1, offset)).fetchall()
+            now = utc()
+            return {"items": [self._resolve(db, r["key"], now, now) for r in rows[:limit]], "more": len(rows) > limit}
+
+    def sources(self, *, limit=40, offset=0):
+        limit_rows(limit)
+        if type(offset) is not int or not 0 <= offset < 2**63:
+            raise ValueError("invalid offset")
+        with self._tx() as db:
+            rows = db.execute("""
+                SELECT request_id,source,substr(body,1,180) AS preview,effective_at,recorded_at,
+                       json_extract(payload,'$.role') AS role
+                FROM documents WHERE json_extract(payload,'$.origin') IS NULL
+                ORDER BY id DESC LIMIT ? OFFSET ?
+            """, (limit + 1, offset)).fetchall()
+            return {"items": [dict(r) for r in rows[:limit]], "more": len(rows) > limit}
+
     def status(self):
         with self._tx() as db:
             return dict(db.execute("""
@@ -338,7 +376,7 @@ class Ledger:
     def export(self):
         """Capture exact extracted evidence and seal the stream against truncation."""
         with self._tx() as db:
-            yield {"format": "recall-ledger/2"}
+            yield {"format": "gravity-memory/2"}
             digest = hashlib.sha256()
             count = 0
             for row in db.execute("SELECT * FROM documents ORDER BY id"):
@@ -361,14 +399,14 @@ class Ledger:
     def restore(self, records):
         stream = iter(records)
         header = next(stream, None)
-        if header not in ({"format": "recall-ledger/1"}, {"format": "recall-ledger/2"}):
+        if header not in ({"format": "recall-ledger/1"}, {"format": "recall-ledger/2"}, {"format": "gravity-memory/2"}):
             raise ValueError("unsupported export header")
         with self._tx(write=True) as db:
             if db.execute("SELECT 1 FROM documents LIMIT 1").fetchone():
                 raise Conflict("restore requires an empty workspace")
             count = 0
             digest = hashlib.sha256()
-            sealed = header["format"] == "recall-ledger/2"
+            sealed = header["format"].endswith("/2")
             footer = False
             for entry in stream:
                 if footer:

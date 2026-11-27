@@ -3,14 +3,21 @@ requires = ["setuptools>=65"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "recall-ledger"
-version = "0.1.0"
+name = "gravity-memory"
+version = "0.2.0"
 description = "A local evidence-backed memory store for long-running agents"
 requires-python = ">=3.11"
 dependencies = []
 
 [project.scripts]
-recall-ledger = "recall_ledger.__main__:main"
+gravity-memory = "gravity_memory.__main__:main"
+recall-ledger = "gravity_memory.__main__:main"
 
 [tool.setuptools]
-packages = ["recall_ledger"]
+packages = ["gravity_memory","recall_ledger"]
+
+[tool.setuptools.package-data]
+gravity_memory = ["catalog.json","web/*.html","web/*.css","web/*.js","web/*.png","licenses/*.txt"]
+
+[project.optional-dependencies]
+semantic = ["numpy", "onnxruntime", "tokenizers"]
