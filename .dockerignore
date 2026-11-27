@@ -1,0 +1,9 @@
+**
+!pyproject.toml
+!README.md
+!gravity_memory/
+!gravity_memory/**
+!recall_ledger/
+!recall_ledger/**
+**/__pycache__/
+**/*.pyc

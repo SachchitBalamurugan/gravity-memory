@@ -1,8 +1,14 @@
 # Gravity Memory
 
-A local memory workspace for agents that need to answer **what is current, when did it change, and who said so?** It stores an original document, cited facts and search indexes in one SQLite transaction. An accepted write is readable immediately. Python 3.11+ with SQLite FTS5 runs the core offline. Optional local models can suggest facts or retrieve semantically related passages.
+Gravity Memory gives application and coding agents cited context across runs. Open a run to see the evidence an agent received, correct the source, and compare the original reply with today's recall. Use it on a Windows desktop or host one team service with namespace-scoped accounts and agent keys. The core runs offline with Python 3.11+ and SQLite FTS5.
+
+## Start with an agent
+
+For a shared workspace, start the HTTPS Compose service, create a namespace, and issue an agent key. The Python and TypeScript clients and four coding-client configurations use the same run and recall API. Private GitHub, Notion, and Google Drive selections can publish to a chosen namespace. [Team setup and agent quickstarts](docs/team-service.md) · [Connector credentials and supported content](docs/private-connectors.md) · [TypeScript SDK](sdk/typescript/README.md)
 
 ## Open the workspace
+
+[0.4 release notes and verification](docs/release-0.4.md) · [Cross-session evaluation](docs/agent-evaluation.md)
 
 On Windows x64, open **GravityMemory.exe** from the [latest release](https://github.com/SachchitBalamurugan/gravity-memory/releases/latest). It opens the studio in the default browser and stores personal records in `%LOCALAPPDATA%\GravityMemory\workspace.sqlite`. Keep its console open while using the studio. The executable includes Python, SQLite and the optional semantic-search libraries. Actual model weights install on demand. From a source checkout use the following command with Python 3.11 or newer.
 

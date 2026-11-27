@@ -103,7 +103,7 @@ function retireForm(key){
 const importTypes={files:'Documents',conversation:'Conversation',provider:'Provider export',github:'GitHub'};
 
 function importFrame(form){
-  return `<div class="import-layout"><section class="panel import-box"><div class="import-tabs">${Object.entries(importTypes).map(([id,label])=>`<button type="button" data-import-tab="${id}" aria-pressed="${importTab===id}" class="${importTab===id?'selected':''}">${label}</button>`).join('')}</div>${form}</section></div>`;
+  return `<div class="import-layout"><section class="panel import-box"><div class="import-tabs">${Object.entries(importTypes).filter(([id])=>!session.team||id!=='github').map(([id,label])=>`<button type="button" data-import-tab="${id}" aria-pressed="${importTab===id}" class="${importTab===id?'selected':''}">${label}</button>`).join('')}</div>${form}</section></div>`;
 }
 function importFooter(action){return `<p class="err" id="import-error" role="alert"></p><div class="actionbar"><button class="primary" type="submit">${action}</button></div>`}
 function documentForm(){

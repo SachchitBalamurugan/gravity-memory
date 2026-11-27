@@ -1,0 +1,4 @@
+{$GRAVITY_HOST:localhost} {
+    encode zstd gzip
+    reverse_proxy memory:8787
+}

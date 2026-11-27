@@ -35,6 +35,9 @@ def main():
     parser.add_argument("--db", default=".ledger/memory.sqlite", help="one trusted user or project per database")
     parser.add_argument("--model", help="minilm or an installed Ollama embedding model for hybrid archive search")
     commands = parser.add_subparsers(dest="command", required=True)
+    from . import agent_cli, team_cli
+    team_cli.options(commands)
+    agent_cli.options(commands)
     commands.add_parser("demo", help="run the moving-city example in a temporary database")
     command = commands.add_parser("call", help="run an API operation using a JSON file or stdin")
     command.add_argument("operation", choices=OPS)
@@ -112,7 +115,12 @@ def main():
     commands.add_parser("erase", help="remove all data from the selected workspace").add_argument("--confirm", required=True)
     args = parser.parse_args()
     try:
-        if args.command == "models":
+        if args.command == "agent":
+            agent_cli.execute(args)
+            return 0
+        if args.command == "team":
+            result = team_cli.execute(args)
+        elif args.command == "models":
             from . import models
             if args.action == "list":
                 result = models.inventory()

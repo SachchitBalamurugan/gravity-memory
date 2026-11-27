@@ -1,8 +1,6 @@
 """Local browser workspace. Administrative file paths stay in the CLI."""
 import hmac
-from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from importlib import resources
 import json
 import secrets
 import shutil
@@ -13,7 +11,8 @@ from pathlib import Path
 import threading
 import webbrowser
 
-from . import github_sources, models
+from . import connectors, github_sources, models
+from .webassets import asset
 from .runtime import MiniLM, route_review
 from .semantic import index_passages
 from .service import dispatch, OPS
@@ -40,10 +39,21 @@ def seed(db):
         db.remember("atlas-" + str(i+1), body, source, effective_at=f"2026-01-{i+1:02}T10:00:00Z", role="user", facts=facts)
 
 
+def namespace_activity(stores, namespaces):
+    counts = []
+    for ns in namespaces:
+        store = stores[ns["id"]]
+        activity = dispatch(store, "activity", {"days": 30})
+        counts.append({"id": ns["id"], "name": ns["name"], "requests": activity["reads"] + activity["writes"]})
+    return counts
+
+
 class Studio:
     def __init__(self, workspace):
         self.scratch = tempfile.TemporaryDirectory(prefix="gravity-sample-")
         self.stores = {"personal": workspace, "sample": Ledger(Path(self.scratch.name) / "sample.sqlite")}
+        for name, store in self.stores.items():
+            store.connector_namespace = name
         seed(self.stores["sample"])
         self.lock = threading.Lock()
         self.jobs = {}
@@ -75,7 +85,10 @@ class Studio:
     def call(self, scope, op, args):
         db = self.stores[scope]
         if op in OPS:
-            return dispatch(db, op, args)
+            return dispatch(db, op, args, track=op in ("remember", "capture_conversation", "retire", "annotate",
+                "import_provider", "import_documents", "search", "context"))
+        if op in connectors.CONNECTOR_OPS:
+            return connectors.call(db, op, args)
         if op == "overview":
             return {"counts": db.status(), "recent": db.sources(limit=5)["items"],
                     "memories": db.library(limit=12)["items"], "pending": db.pending_count(),
@@ -120,7 +133,6 @@ class Studio:
 def studio_server(ledger, port=0):
     studio = Studio(ledger)
     ticket, session = secrets.token_urlsafe(32), secrets.token_urlsafe(32)
-    assets = resources.files(__package__).joinpath("web")
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, *args):
             pass
@@ -138,7 +150,10 @@ def studio_server(ledger, port=0):
             for k,v in (headers or {}).items():
                 self.send_header(k,v)
             self.end_headers()
-            self.wfile.write(body)
+            try:
+                self.wfile.write(body)
+            except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError):
+                pass
 
         def allowed_host(self):
             return self.headers.get("Host") == f"127.0.0.1:{self.server.server_port}"
@@ -195,13 +210,16 @@ def studio_server(ledger, port=0):
                     f"gm_{self.server.server_port}={session}; HttpOnly; SameSite=Strict; Path=/"})
             if self.path.startswith("/packs/"):
                 return self.send_pack(self.path[7:])
-            names = {"/":("index.html","text/html; charset=utf-8"), "/studio.css":("studio.css","text/css"),
-                     "/studio.js":("studio.js","text/javascript"), "/workspace.js":("workspace.js","text/javascript"),
-                     "/favicon.ico":("icon.png","image/png")}
-            if self.path not in names:
+            if self.path == "/session":
+                if not self.authenticated():
+                    return self.output(401, {"team": False, "authenticated": False})
+                namespaces = [{"id": k, "name": "My workspace" if k == "personal" else "Sample workspace", "role": "owner"} for k in studio.stores]
+                return self.output(200, {"team": False, "authenticated": True, "user": "Local operator", "owner": True,
+                                        "namespaces": namespaces, "namespace_activity": namespace_activity(studio.stores, namespaces)})
+            item = asset(self.path[1:])
+            if not item:
                 return self.output(404, {"error":"unknown resource"})
-            name, media = names[self.path]
-            return self.output(200, assets.joinpath(name).read_bytes(), media)
+            return self.output(200, *item)
 
         def do_POST(self):
             origin = self.headers.get("Origin")
@@ -237,6 +255,18 @@ def studio_server(ledger, port=0):
 
 def launch(db, port=0, open_browser=True):
     server, url, studio = studio_server(db, port)
+    stop = threading.Event()
+    def sync_personal():
+        import logging
+        while not stop.is_set():
+            try:
+                connectors.run_due(db)
+                dispatch(db, "activity", {"days": 7})
+            except (OSError, ValueError, sqlite3.Error) as error:
+                logging.warning("Local maintenance failed (%s)", type(error).__name__)
+            stop.wait(60)
+    worker = threading.Thread(target=sync_personal, daemon=True, name="gravity-local-sync")
+    worker.start()
     try:
         with server:
             if sys.stdout is not None:
@@ -246,4 +276,6 @@ def launch(db, port=0, open_browser=True):
                 webbrowser.open(url)
             server.serve_forever()
     finally:
+        stop.set()
+        worker.join(timeout=5)
         studio.scratch.cleanup()

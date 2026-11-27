@@ -1,0 +1,9 @@
+{
+  "name": "@gravity-memory/client",
+  "version": "0.4.0",
+  "description": "Namespace-scoped Gravity Memory client",
+  "type": "module",
+  "exports": { ".": { "types": "./index.d.ts", "import": "./index.js" } },
+  "engines": { "node": ">=20" },
+  "files": ["index.js", "index.d.ts", "README.md"]
+}

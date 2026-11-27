@@ -7,6 +7,7 @@ import sys
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 from .store import Conflict
+from . import __version__, runs
 
 TEXT = {"type": "string"}
 INT = {"type": "integer"}
@@ -55,17 +56,30 @@ OPS = {
 }
 
 
-def dispatch(ledger, name, args):
+for _name in ("search", "context", "profile", "connections"):
+    OPS[_name][2]["filter"] = {"type": "object"}
+OPS["remember"][2]["metadata"] = {"type": "object"}
+for _description, _required, _fields in OPS.values():
+    _fields["run_id"] = {"type": "string", "description": "Attach this operation to an open run owned by this caller."}
+OPS.update(runs.RUN_OPS)
+
+
+def dispatch(ledger, name, args, *, actor="local", admin=True, trusted=True, track=True):
     if not isinstance(name, str) or name not in OPS:
         raise ValueError("unknown operation")
     if not isinstance(args, dict):
         raise ValueError("arguments must be an object")
+    if name in runs.RUN_OPS:
+        return runs.call(ledger, name, args, actor=actor, admin=admin, trusted=trusted)
     operation = getattr(ledger, name)
+    operation_args = {key: value for key, value in args.items() if key != "run_id"} if "run_id" in args else args
     try:
-        inspect.signature(operation).bind(**args)
+        inspect.signature(operation).bind(**operation_args)
     except TypeError as error:
         raise ValueError(str(error)) from error
-    return operation(**args)
+    if track or "run_id" in args:
+        return runs.tracked(ledger, name, args, actor=actor, invoke=lambda: operation(**operation_args))
+    return operation(**operation_args)
 
 
 def tool_list():
@@ -74,7 +88,7 @@ def tool_list():
             for name, (description, required, fields) in OPS.items()]
 
 
-def rpc(ledger, message):
+def rpc(ledger, message, *, available=tool_list, invoke=dispatch):
     def error(code, detail):
         return {"jsonrpc": "2.0", "id": msg_id, "error": {"code": code, "message": detail}}
     msg_id = message.get("id") if isinstance(message, dict) else None
@@ -89,28 +103,33 @@ def rpc(ledger, message):
         supported = ("2025-11-25", "2025-06-18", "2025-03-26", "2024-11-05")
         version = params.get("protocolVersion")
         result = {"protocolVersion": version if version in supported else supported[0],
-                  "capabilities": {"tools": {}}, "serverInfo": {"name": "gravity-memory", "version": "0.3.0"}}
+                  "capabilities": {"tools": {}}, "serverInfo": {"name": "gravity-memory", "version": __version__}}
     elif method == "ping":
         result = {}
     elif method == "tools/list":
-        result = {"tools": tool_list()}
+        try:
+            result = {"tools": available()}
+        except (OSError, ValueError) as exc:
+            return error(-32000, str(exc))
     elif method == "tools/call":
         try:
-            value = dispatch(ledger, params.get("name"), params.get("arguments", {}))
-            result = {"content": [{"type": "text", "text": json.dumps(value, ensure_ascii=False)}]}
-        except (ValueError, sqlite3.Error, OverflowError) as exc:
+            value = invoke(ledger, params.get("name"), params.get("arguments", {}))
+            result = {"content": [{"type": "text", "text": json.dumps(value, ensure_ascii=False, separators=(",", ":"))}]}
+        except (ValueError, OSError, sqlite3.Error, OverflowError) as exc:
             result = {"content": [{"type": "text", "text": str(exc)}], "isError": True}
     else:
         return error(-32601, "method not found")
     return {"jsonrpc": "2.0", "id": msg_id, "result": result}
 
 
-def stdio(ledger):
+def stdio(ledger, **options):
     for line in sys.stdin.buffer:
         try:
-            response = rpc(ledger, json.loads(line))
-        except (ValueError, RecursionError):
+            response = rpc(ledger, json.loads(line), **options)
+        except (ValueError, RecursionError, OSError) as exc:
             response = {"jsonrpc": "2.0", "id": None, "error": {"code": -32700, "message": "invalid JSON"}}
+            if isinstance(exc, OSError):
+                response["error"] = {"code": -32000, "message": "connection unavailable"}
         if response is not None:
             sys.stdout.buffer.write(json.dumps(response).encode() + b"\n")
             sys.stdout.buffer.flush()

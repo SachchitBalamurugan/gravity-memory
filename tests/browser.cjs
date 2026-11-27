@@ -24,10 +24,13 @@ async function run(){
     page.on('pageerror',e=>errors.push(e.message));
     page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
     await page.goto(url);
-    await page.getByRole('heading',{name:'Workspace profile'}).waitFor();
+    await page.getByRole('heading',{name:'Request activity'}).waitFor();
     const shots=process.env.GRAVITY_SCREENSHOTS;
-    if(shots){fs.mkdirSync(shots,{recursive:true});await page.screenshot({path:path.join(shots,'overview.png')})}
-    assert.equal(await page.locator('#workspace').inputValue(),'sample');
+    if(shots)fs.mkdirSync(shots,{recursive:true});
+    assert.equal(await page.locator('#workspace').inputValue(),'personal');
+    await page.getByText('No runs recorded',{exact:true}).waitFor();
+    await page.locator('#workspace').selectOption('sample');
+    await page.getByRole('heading',{name:'Request activity'}).waitFor();
     const nav=name=>page.locator('#navigation').getByRole('button',{name});
     await nav('Memory profile').click();
     await page.getByRole('heading',{name:'Current facts'}).waitFor();
@@ -40,6 +43,8 @@ async function run(){
     await page.locator('.big').getByText('email',{exact:true}).waitFor();
     await page.keyboard.press('Escape');
     await page.keyboard.press('Control+k');
+    await page.locator('#palette-input').fill('contact');
+    await page.locator('[data-find]').click();
     await page.locator('#context-query').fill('contact');
     await page.getByRole('button',{name:'Run search'}).click();
     await page.locator('.context-fact').first().waitFor();
@@ -67,7 +72,7 @@ async function run(){
     await page.getByRole('button',{name:'Save routing'}).click();
     await page.getByText('Local routing saved',{exact:true}).waitFor();
     await nav('Overview').click();
-    await page.getByRole('heading',{name:'Workspace profile'}).waitFor();
+    await page.getByRole('heading',{name:'Request activity'}).waitFor();
     await page.locator('#workspace').selectOption('personal');
     await page.getByText('Add a source to start your archive.').waitFor();
     const capture=async(body,date)=>{
@@ -75,7 +80,7 @@ async function run(){
       await page.locator('#body').fill(body);
       if(date)await page.locator('#effective').fill(date);
       await page.getByRole('button',{name:'Save source'}).click();
-      await page.locator('dialog').waitFor({state:'hidden'});
+      await page.locator('#detail').waitFor({state:'hidden'});
     };
     await page.locator('#add').click();
     await capture('I live in Dublin.','2024-04-05T12:00');
@@ -196,14 +201,39 @@ async function run(){
     await page.getByRole('button',{name:'Retire memory'}).click();
     await page.locator('#retire-reason').fill('Customer retired their pager.');
     await page.getByRole('button',{name:'Confirm retirement'}).click();
-    await page.locator('dialog').waitFor({state:'hidden'});
+    await page.locator('#detail').waitFor({state:'hidden'});
     await nav('Memory library').click();
     await page.locator('.row[data-key="contact.channel"]').getByText('revoked',{exact:false}).waitFor();
     await page.locator('.row[data-key="contact.channel"]').click();
     await page.locator('blockquote').getByText('Customer retired their pager.',{exact:true}).waitFor();
     await page.keyboard.press('Escape');
     await page.locator('#workspace').selectOption('sample');
-    await page.getByRole('heading',{name:'Workspace profile'}).waitFor();
+    await page.getByRole('heading',{name:'Request activity'}).waitFor();
+    await nav('Agents & MCP').click();
+    await page.getByRole('button',{name:'Run verification',exact:true}).click();
+    await page.locator('#smoke-status').getByText(/Verified/).waitFor();
+    await page.getByRole('button',{name:'Inspect run'}).click();
+    await page.getByRole('heading',{name:'Request timeline'}).waitFor();
+    await page.locator('[data-trace]').filter({hasText:'Recall'}).click();
+    await page.getByRole('heading',{name:'Returned evidence'}).waitFor();
+    await page.getByRole('button',{name:'Compare with current recall'}).click();
+    await page.locator('#comparison').getByRole('heading',{name:'Recorded'}).waitFor();
+    if(shots)await page.screenshot({path:path.join(shots,'run-inspector.png')});
+    await page.keyboard.press('Escape');
+    await nav('Connectors').click();
+    await page.getByRole('button',{name:'Connect Notion',exact:true}).click();
+    await page.getByText('Publish to').waitFor();
+    await page.keyboard.press('Escape');
+    await nav('Evidence graph').click();
+    await page.getByRole('heading',{name:'Supporting sources'}).waitFor();
+    await nav('Overview').click();
+    await page.getByRole('button',{name:'7D',exact:true}).click();
+    await page.locator('svg [data-day]').last().focus();
+    await page.keyboard.press('Enter');
+    await page.getByRole('heading',{name:'Run history'}).waitFor();
+    await nav('Overview').click();
+    await page.getByRole('heading',{name:'Request activity'}).waitFor();
+    if(shots)await page.screenshot({path:path.join(shots,'overview.png')});
     await page.setViewportSize({width:390,height:844});
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,'mobile width');
     await page.locator('#mobile-menu').click();
@@ -211,12 +241,12 @@ async function run(){
     await page.locator('.row').first().click();
     await page.locator('#asof').waitFor();
     await page.keyboard.press('Escape');
-    for(const [section,heading] of [['Context explorer','Context explorer'],['Import data','Import documents'],['Model library','Model library']]){
+    for(const [section,heading] of [['Playground','Playground'],['Import data','Import documents'],['Model library','Model library']]){
       await page.locator('#mobile-menu').click();await nav(section).click();
       await page.getByRole('heading',{name:heading,exact:true}).waitFor();
       assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,section+' mobile width');
     }
-    if(shots){await page.locator('#message.show').waitFor({state:'hidden'});await page.locator('#mobile-menu').click();await nav('Overview').click();await page.getByRole('heading',{name:'Workspace profile'}).waitFor();await page.screenshot({path:path.join(shots,'mobile.png')})}
+    if(shots){await page.locator('#message.show').waitFor({state:'hidden'});await page.locator('#mobile-menu').click();await nav('Overview').click();await page.getByRole('heading',{name:'Request activity'}).waitFor();await page.screenshot({path:path.join(shots,'mobile.png')})}
     assert.deepEqual(errors,[]);
     console.log('Desktop and mobile customer journeys passed. No browser errors.');
   } finally {

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gravity-memory"
-version = "0.3.0"
+version = "0.4.0"
 description = "A local evidence-backed memory store for long-running agents"
 requires-python = ">=3.11"
 dependencies = []
@@ -20,4 +20,5 @@ packages = ["gravity_memory","recall_ledger"]
 gravity_memory = ["catalog.json","web/*.html","web/*.css","web/*.js","web/*.png","licenses/*.txt"]
 
 [project.optional-dependencies]
+connectors = ["pypdf>=5,<8"]
 semantic = ["numpy", "onnxruntime", "tokenizers"]

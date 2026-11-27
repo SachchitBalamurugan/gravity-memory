@@ -128,13 +128,19 @@ class Ledger:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with closing(self._connect()) as db:
             version = db.execute("PRAGMA user_version").fetchone()[0]
-            if version not in (0, 1, 2):
+            if version not in (0, 1, 2, 3, 4):
                 raise ValueError(f"unsupported database version {version}")
             if version == 0:
                 db.execute("PRAGMA journal_mode=WAL")
                 db.executescript(SCHEMA)
             elif version == 1:
                 db.executescript(UPGRADE_V1)
+            if version < 3:
+                from .run_schema import UPGRADE
+                db.executescript(UPGRADE)
+            if version < 4:
+                from .run_schema import UPGRADE_V3
+                db.executescript(UPGRADE_V3)
 
     def _connect(self):
         db = sqlite3.connect(self.path, isolation_level=None, timeout=15)
@@ -149,7 +155,7 @@ class Ledger:
         # A composite read may call the existing retrieval paths. Bind those reads
         # to one SQLite snapshot even if another connection imports or erases data.
         current = getattr(self._snapshot, "connection", None)
-        if current is not None and not write:
+        if current is not None and (not write or getattr(self._snapshot, "writable", False)):
             yield current
             return
         with closing(self._connect()) as db:
@@ -157,18 +163,20 @@ class Ledger:
             with db:
                 if snapshot:
                     self._snapshot.connection = db
+                    self._snapshot.writable = write
                 try:
                     yield db
                 finally:
                     if snapshot:
                         del self._snapshot.connection
+                        del self._snapshot.writable
 
-    def remember(self, request_id, text, source, *, role="document", effective_at=None, facts=None):
+    def remember(self, request_id, text, source, *, role="document", effective_at=None, facts=None, metadata=None):
         """Persist an original and both indexes atomically. Only user turns enable the parser."""
         with self._tx(write=True) as db:
-            return self._remember(db, request_id, text, source, role, effective_at, facts, utc())
+            return self._remember(db, request_id, text, source, role, effective_at, facts, utc(), metadata=metadata)
 
-    def _remember(self, db, request_id, text, source, role, effective_at, facts, recorded, origin=None, frozen=None):
+    def _remember(self, db, request_id, text, source, role, effective_at, facts, recorded, origin=None, frozen=None, metadata=None):
         string(request_id, "request_id", 256)
         string(text, "text", 2_000_000)
         string(source, "source", 512)
@@ -179,6 +187,9 @@ class Ledger:
         if effective_at is not None:
             effective_at = utc(effective_at)
         options = {"role": role, "effective_at": effective_at, "facts": facts}
+        if metadata is not None:
+            from .scoping import validate_metadata
+            options["metadata"] = validate_metadata(metadata)
         if origin is not None:
             options["origin"] = origin
         fingerprint = hashlib.sha256(encoded([source, text, options]).encode()).hexdigest()
@@ -264,7 +275,7 @@ class Ledger:
                 raise ValueError("require_review must be a boolean")
             return self._resolve(db, valid_key(key), utc(as_of), utc(known_at), require_review)
 
-    def profile(self, *, limit=24, offset=0, as_of=None, known_at=None, subject=None, require_review=False):
+    def profile(self, *, limit=24, offset=0, as_of=None, known_at=None, subject=None, require_review=False, filter=None):
         """Read the workspace's current, cited facts, grouped by canonical key prefix."""
         limit_rows(limit)
         if type(offset) is not int or not 0 <= offset < 2**63:
@@ -285,7 +296,8 @@ class Ledger:
         groups = {}
         excluded = {}
         total = 0
-        with self._tx() as db:
+        from .scoping import scoped
+        with scoped(self, filter), self._tx() as db:
             pending = self._unclassified_turns(db, "", at, known) if require_review else []
             variants = db.execute(f"""
                 WITH latest AS (
@@ -314,7 +326,7 @@ class Ledger:
                 "total": total, "more": offset + limit < total, "excluded": excluded,
                 "as_of": at, "known_at": known}
 
-    def context(self, query, *, limit=5, retrieval="auto", profile_limit=6, as_of=None, known_at=None, require_review=False):
+    def context(self, query, *, limit=5, retrieval="auto", profile_limit=6, as_of=None, known_at=None, require_review=False, filter=None):
         """Read a scoped profile, matching current facts and historical passages in one snapshot."""
         string(query, "query", 2048)
         limit_rows(limit)
@@ -323,7 +335,8 @@ class Ledger:
             raise ValueError("retrieval must be auto, full_text, or facts_only")
         at, known = _time_bounds(as_of, known_at)
         scope = subject_scope(query)
-        with self._tx(snapshot=True):
+        from .scoping import scoped
+        with scoped(self, filter), self._tx(snapshot=True):
             profile = self.profile(limit=profile_limit, as_of=at, known_at=known, require_review=require_review,
                                    subject=scope.rstrip(".") if scope else None)
             facts = self.search(query, view="facts", limit=limit, as_of=at, known_at=known,
@@ -359,8 +372,12 @@ class Ledger:
                              (string(request_id, "request_id", 256),)).fetchone()
             return dict(row) if row else None
 
-    def search(self, query, *, view="facts", limit=8, as_of=None, known_at=None, require_review=False):
+    def search(self, query, *, view="facts", limit=8, as_of=None, known_at=None, require_review=False, filter=None):
         """Return lexical matches in the requested view. Archive hits are explicitly labeled historical evidence."""
+        if filter is not None:
+            from .scoping import scoped
+            with scoped(self, filter):
+                return self.search(query, view=view, limit=limit, as_of=as_of, known_at=known_at, require_review=require_review)
         if type(require_review) is not bool or (require_review and view != "facts"):
             raise ValueError("require_review is a boolean option for fact search")
         if view == "auto_archive":
@@ -449,7 +466,7 @@ class Ledger:
         with self._tx(write=True) as db:
             return self._annotate(db, request_id, original_id, facts, utc())
 
-    def _annotate(self, db, request_id, original_id, facts, recorded):
+    def _annotate(self, db, request_id, original_id, facts, recorded, effective_at=None):
         row = db.execute("SELECT * FROM documents WHERE request_id=?",
                          (string(original_id, "original_id", 256),)).fetchone()
         if row is None:
@@ -460,7 +477,8 @@ class Ledger:
         if not isinstance(facts, list):
             raise ValueError("review requires a facts array")
         return self._remember(db, request_id, row["body"], row["source"], "document",
-                              row["effective_at"], facts, recorded, origin=original_id)
+                              row["effective_at"] if effective_at is None else effective_at,
+                              facts, recorded, origin=original_id)
 
     def library(self, *, limit=40, offset=0):
         limit_rows(limit)
@@ -504,6 +522,7 @@ class Ledger:
                 if "origin" in options:
                     entry = {"request_id": row["request_id"], "original_id": options["origin"],
                              "facts": options["facts"], "recorded_at": row["recorded_at"]}
+                    entry["effective_at"] = row["effective_at"]
                 else:
                     stored = [dict(f) for f in db.execute("""
                         SELECT key,value,start,substr(?,start+1,stop-start) AS quote,expires_at
@@ -541,7 +560,9 @@ class Ledger:
                     fields.add("assertions")
                     digest.update((encoded(entry) + "\n").encode())
                 review_fields = {"request_id", "original_id", "facts", "recorded_at"}
-                if not isinstance(entry, dict) or set(entry) not in (fields, review_fields) or not isinstance(entry["recorded_at"], str):
+                if not isinstance(entry, dict) or set(entry) not in (
+                    fields, fields | {"metadata"}, review_fields, review_fields | {"effective_at"}
+                ) or not isinstance(entry["recorded_at"], str):
                     raise ValueError("invalid export entry")
                 row = dict(entry)
                 recorded = utc(row.pop("recorded_at"))
@@ -580,13 +601,17 @@ class Ledger:
             return self._remember(db, request_id, reason, "Operator decision", "document", effective_at,
                                   [{"key": key, "value": None, "quote": reason}], utc())
 
-    def connections(self, key, *, limit=12):
+    def connections(self, key, *, limit=12, filter=None):
         from .connections import connections
-        return connections(self, key, limit=limit)
+        from .scoping import scoped
+        with scoped(self, filter):
+            return connections(self, key, limit=limit)
 
     def erase(self):
         """Logical whole-workspace erase, including sources, history, receipts and searchable content."""
         with self._tx(write=True) as db:
             count = db.execute("SELECT count(*) FROM documents WHERE json_extract(payload,'$.origin') IS NULL").fetchone()[0]
             db.execute("DELETE FROM documents")
+            from .runs import clear_run_data
+            clear_run_data(db)
         return {"erased_documents": count}

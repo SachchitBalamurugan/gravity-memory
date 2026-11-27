@@ -17,17 +17,34 @@ const icons = {
 function icon(name) {
   return `<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"><path d="${icons[name] || icons.sources}"></path></svg>`;
 }
+Object.assign(icons,{
+  runs:'M3 5h10 M3 12h6 M3 19h10 M17 7l5 5-5 5z',
+  graph:'M5 4h6v5H5z M13 15h6v5h-6z M8 9v5l5 3 M11 6h7v4',
+  namespaces:'M2 7h7l2 2h11v11H2z M2 7V4h8l2 2h7',
+  connectors:'M8 3v4 M14 3v4 M6 8h10v3a5 5 0 0 1-10 0z M11 16v4h6',
+  setup:'M7 6l-5 6 5 6 M17 6l5 6-5 6 M14 4l-4 16',
+  keys:'M11 13a5 5 0 1 1 2 2l-5 5H4v-4z M16 8h.1',
+  activity:'M2 13h5l3-7 4 13 3-7h5', clock:'M12 3a9 9 0 1 0 .1 0 M12 7v5l4 2',
+  check:'M4 12l5 5L20 6', folder:'M3 5h6l2 3h10v11H3z',
+  down:'M7 9l5 5 5-5', inbox:'M4 4h16v15H4z M4 12h4l2 3h4l2-3h4'
+});
 const pages = {
-  overview:['Overview','Workspace overview','Recent evidence, current facts, and sources waiting for review.'],
+  overview:['Overview','Overview',''],
+  runs:['Agent runs','Agent runs','Follow an agent from its first memory request through its handoff.'],
+  context:['Playground','Playground','Inspect the facts and source passages available to an agent.'],
+  namespaces:['Namespaces','Namespaces','Control which people and agents can access a collection of memory.'],
   profile:['Memory profile','Memory profile','Current facts grouped by topic, with a citation for each value.'],
-  context:['Context explorer','Context explorer','Search the facts and source passages available to your agent.'],
   library:['Memory library','Memory library','Inspect individual keys, corrections, and revision history.'],
   sources:['Source archive','Source archive','Browse original documents, conversation turns, and cited passages.'],
-  review:['Review inbox','Review inbox','Confirm useful facts from unclassified sources.'],
-  import:['Import data','Import data','Bring documents, conversations, and provider exports into this workspace.'],
-  models:['Model library','Model library','Install and manage local models for review and retrieval.']
+  graph:['Evidence graph','Evidence graph','Explore how facts connect through the sources they share.'],
+  review:['Review inbox','Review inbox','Review proposed lessons and confirm useful facts from source material.'],
+  connectors:['Connectors','Connectors','Keep selected sources in sync with this namespace.'],
+  import:['Import data','Import data','Bring documents, conversations, and provider exports into this namespace.'],
+  setup:['Agents & MCP','Agent setup','Connect an application or coding agent and verify a save-and-recall request.'],
+  keys:['API keys','API keys','Issue and revoke credentials scoped to one namespace.'],
+  models:['Model library','Model library','Local models for source review and retrieval.']
 };
-const navGroups = {'Workspace':['overview','profile','context'], 'Records':['library','sources','review'], 'Tools':['import','models']};
+const navGroups={'Workspace':['overview','runs','context'],'Memory':['namespaces','library','profile','graph','review'],'Sources':['connectors','sources','import'],'Developers':['setup','keys','models']};
 let page='overview', scope='personal', serial=0, dialogSerial=0, offset=0, query='', searchMode='archive', reviewRole='user', overview={}, toastTimer;
 const content=el('content'), dialog=el('detail'), detail=el('dialog-content');
 function toast(message){el('message').textContent=message;el('message').className='show';clearTimeout(toastTimer);toastTimer=setTimeout(()=>el('message').className='',4400)}
@@ -50,25 +67,7 @@ function memoryTable(rows){
 function recent(m){
   return `<button class="source-row" data-source="${safe(m.request_id)}"><i class="sourceicon">${icon(m.role==='document'?'sources':'chat')}</i><span><strong>${safe(m.source)}</strong><small>${safe(shownDate(m.effective_at))}</small></span><span class="arrow">›</span></button>`;
 }
-function overviewPage(d,profile){
-  const n=d.counts;
-  const items=profile.groups.flatMap(group=>group.items);
-  const display=items.find(f=>f.key==='profile.name')?.value;
-  const main=items.filter(f=>f.key!=='profile.name').sort((a,b)=>profilePriority(a.key)-profilePriority(b.key)).slice(0,3);
-  const monogram=display?Array.from(String(display).trim())[0]:'G';
-  content.innerHTML=`<div class="metrics">${metric('Memory keys',n.keys,'library','library')}${metric('Original sources',n.documents,'sources','sources')}${metric('Awaiting review',d.pending,'review','review')}</div>
-    <div class="overviewgrid">
-      <section class="profile-card">
-        <div class="panelhead"><h2>Workspace profile</h2>${buttonLink('profile','Open profile')}</div>
-        <div class="profile-identity"><span class="avatar" aria-hidden="true">${safe(monogram)}</span><div><h3>${safe(display || (profile.total?'Workspace facts':'No profile yet'))}</h3><span>${profile.total} current ${profile.total===1?'fact':'facts'}</span></div></div>
-        ${main.length?`<dl class="profile-lines">${main.map(m=>`<div><dt>${safe(friendlyKey(m.key))}</dt><dd><button data-key="${safe(m.key)}">${safe(m.value)} <span>↗</span></button></dd></div>`).join('')}</dl>`:'<p class="profile-empty">Confirmed facts from this workspace appear here.</p>'}
-      </section>
-      <section class="panel recent"><div class="panelhead"><h2>Recent sources</h2>${buttonLink('sources','View all')}</div>
-        ${d.recent.length?d.recent.slice(0,4).map(recent).join(''):'<p class="empty">Add a source to start your archive.</p>'}
-      </section>
-    </div>
-    <section class="panel"><div class="panelhead"><h2>Memory library</h2>${buttonLink('library','Browse keys')}</div>${memoryTable(d.memories.slice(0,6))}</section>`;
-}
+
 function pager(more,n){return `<div class="pager"><small>${n?`${offset+1}–${offset+n}`:'0 results'}</small><button class="secondary" data-prev ${offset?'':'disabled'}>Previous</button><button class="secondary" data-next ${more?'':'disabled'}>Next</button></div>`}
 function sourceItems(rows,review=false){
  return rows.map(m=>`<button class="listitem" ${Number.isInteger(m.start)?`data-proof="${safe(m.request_id)}" data-start="${m.start}" data-stop="${m.stop}"`:`data-source="${safe(m.request_id)}"`} ${review?'data-review="1"':''}><i class="sourceicon">${icon(review?'review':'sources')}</i><div><strong>${safe(m.source)}</strong><p>${safe(m.preview||m.quote)}</p><small>${safe(shownDate(m.effective_at))}</small></div><span class="arrow">›</span></button>`).join('');
@@ -77,20 +76,23 @@ async function render(){
   const rev=++serial;
   nav();
   el('title').textContent=pages[page][1]; el('crumb').textContent=pages[page][0];el('subtitle').textContent=pages[page][2];
-  el('workspace').value=scope;el('import-shortcut').hidden=page==='import';content.setAttribute('aria-busy','true');
+  el('workspace').value=scope;
+  el('add').hidden=!canWrite();el('import-shortcut').hidden=page==='import'||!canWrite();
+  content.setAttribute('aria-busy','true');
   if(!content.firstChild) content.innerHTML='<div class="loading" role="status">Loading workspace…</div>';
   try {
     const data=await api('overview');if(rev!==serial)return;overview=data;nav();
-    if(page==='overview'||page==='profile'){
-      const profile=await api('profile',page==='overview'?{limit:24}:profileArgs());
-      if(rev===serial){if(page==='overview')overviewPage(data,profile);else profilePage(profile)}
-    } else if(page==='context') contextPage();
-    else if(page==='import') await importPage(rev);
+    if(page==='overview') await dashboard(data,rev);
+    else if(page==='profile'){const profile=await api('profile',profileArgs());if(rev===serial)profilePage(profile)}
+    else if(page==='context') playgroundPage();
+    else if(Object.hasOwn(consoleViews,page)) await consoleViews[page](rev);
+    else if(page==='import'){if(canWrite())await importPage(rev);else content.innerHTML=frame('Import data','',emptyState('import','Write access required','Ask a namespace administrator to grant write access.'))}
     else if(page==='models'){
       const cat=await api('catalog');if(rev===serial)modelPage(cat);
     } else if(page==='review'){
       const rows=await api('pending',{role:reviewRole,limit:21,offset});if(rev!==serial)return;
       content.innerHTML=`<div class="toolbar"><div class="tabstrip">${['user','document'].map(role=>`<button data-role="${role}" aria-pressed="${reviewRole===role}" class="${reviewRole===role?'selected':''}">${role==='user'?'User turns':'Documents'}</button>`).join('')}</div></div><section class="panel">${rows.length?sourceItems(rows.slice(0,20),true):'<p class="empty">All caught up. No unclassified sources on this page.</p>'}${pager(rows.length>20,Math.min(rows.length,20))}</section>`;
+      await renderLessons(rev);
     } else {
       const isLib=page==='library';
       const result=query?await api('search',{query,view:isLib?'facts':searchMode,limit:100}):await api(isLib?'library':'sources',{limit:20,offset});
@@ -124,7 +126,8 @@ async function openMemory(key,at,known){
     '<div class="sectionlabel">Revision history</div>'+history.map(v=>'<div class="timeline"><strong>'+safe(v.value??'Revoked')+'</strong> · <small>'+safe(shownDate(v.effective_at))+'</small><blockquote>'+safe(v.quote)+'</blockquote><button class="link" data-proof="'+safe(v.request_id)+'" data-start="'+v.start+'" data-stop="'+v.stop+'">'+safe(v.source)+' ↗</button></div>').join('')+
     '<p class="help">A new source with this key updates its timeline.</p><div class="actionbar">'+(m.status==='current'&&!at&&!known?'<button class="minor" id="retire-key">Retire memory</button>':'')+'<button class="secondary" id="correct">Record correction</button></div>';
   el('at-form').onsubmit=e=>{e.preventDefault();openMemory(key,endDate(el('asof').value),endDate(el('known-asof').value))};
-  el('correct').onclick=()=>addForm(key);
+  el('correct').hidden=!canWrite();el('correct').onclick=()=>addForm(key);
+  if(el('retire-key'))el('retire-key').hidden=!canManage();
   if(el('retire-key'))el('retire-key').onclick=()=>retireForm(key);
   showConnections(key,version,at,known);
  }catch(e){err(e)}
@@ -136,7 +139,9 @@ async function openSource(id,review=false,start=null,stop=null){
   const chars=Array.from(m.text);
   const marked=start==null?safe(m.text):safe(chars.slice(0,start).join(''))+'<mark>'+safe(chars.slice(start,stop).join(''))+'</mark>'+safe(chars.slice(stop).join(''));
   detail.innerHTML='<div class="sectionlabel">'+safe(m.role)+' · '+safe(shownDate(m.effective_at))+'</div><h2>'+safe(m.source)+'</h2><p class="note">'+safe(id)+'</p><div class="sourcetext" id="original">'+marked+'</div><div id="reviewbox"></div>';
+  if(canManage()){detail.insertAdjacentHTML('beforeend','<div class="actionbar"><button class="minor danger" id="erase-source">Erase source</button></div>');el('erase-source').onclick=()=>eraseSource(id)}
   if(m.role!=='assistant'){
+   if(!canManage())return;
    if(review)reviewForm(m);
    else{el('reviewbox').innerHTML='<div class="actionbar"><button class="secondary" id="start-review">Review source</button></div>';el('start-review').onclick=()=>reviewForm(m)}
   }
@@ -175,6 +180,7 @@ function reviewForm(m){
  async function save(facts){await api('annotate',{request_id:id,original_id:m.request_id,facts});dialog.close();toast(facts.length?'Fact confirmed':'Source dismissed');await render()}
  el('dismiss-review').onclick=()=>save([]).catch(err);
  el('confirm-review').onclick=()=>save([{key:el('fieldkey').value.trim(),value:el('fieldvalue').value,quote:el('fieldquote').value,...(selectedStart===null?{}:{start:selectedStart})}]).catch(err);
+ el('propose').hidden=session.team;
  el('propose').onclick=async e=>{
   const button=e.currentTarget,version=dialogSerial;button.disabled=true;const space=scope;
   try{const key=el('fieldkey').value.trim();if(!key)throw Error('Enter the memory key you want the model to extract.');
@@ -190,6 +196,7 @@ function modelPage(cat){
  content.innerHTML='<div class="modelgrid">'+cat.models.map(m=>'<section class="modelcard"><div class="between"><i class="sourceicon">'+icon('models')+'</i>'+badge(m.installed?'installed':'available')+'</div><div><div class="sectionlabel">'+safe(m.task==='review'?'Source review':'Archive search')+'</div><h2>'+safe(m.name)+'</h2><small class="muted">'+safe(m.subtitle)+'</small></div><p>'+safe(m.description)+'</p><small class="key">'+Math.round(m.bytes/1e6)+' MB · '+safe(m.runtime)+' · '+safe(m.license)+'</small><div class="actionbar"><a target="_blank" rel="noreferrer" href="https://huggingface.co/'+safe(m.repo)+'">Model card ↗</a>'+(m.installed?'<a href="/packs/'+safe(m.id)+'" download>Export pack</a>':'')+(m.installed&&cat.windows_runtime_cached&&m.task==='review'?'<a href="/packs/runtime/'+safe(m.id)+'" download>Pack with Windows runtime</a>':'')+
  (m.installed&&m.task==='search'&&!m.runtime_ready?'<span class="help">Install the semantic Python extra to index sources.</span>':m.installed&&m.task==='search'?'<button class="secondary" data-index>Index sources</button>':m.installed&&m.runtime_ready?'<span class="help">Ready locally</span>':'<button class="secondary" data-install="'+safe(m.id)+'">'+(m.installed?'Set up runtime':'Install locally')+'</button>')+'</div></section>').join('')+
  '</div><section class="panel routing"><h2>Review routing</h2><p class="note">Choose which installed model reviews a source first. Every proposed value must match the original words.</p><form id="routeform" class="actionbar"><label>Preferred model <select id="preferred">'+cat.models.filter(m=>m.task==='review').map(m=>'<option value="'+m.id+'" '+(m.id===cat.routing.preferred?'selected':'')+'>'+safe(m.name)+'</option>').join('')+'</select></label><label><input type="checkbox" id="fallback" '+(cat.routing.fallback?'checked':'')+'> Try another installed model on failure</label><button class="secondary">Save routing</button></form></section><section class="panel routing"><h2>Transfer a local model</h2><p class="note">Import a catalog model from another computer. Each pack carries verified weights and can include the Windows review runtime. Workspace memories stay on their device.</p><button class="secondary" id="import-pack">Import model pack</button><input hidden type="file" id="packfile" accept=".gmpack,.zip"></section><div id="jobstatus" role="status" class="note"></div>';
+ if(session.team){content.querySelectorAll('.routing,[data-install],[data-index],a[download]').forEach(x=>x.remove());return}
  el('import-pack').onclick=()=>el('packfile').click();
  el('packfile').onchange=async e=>{
   const input=e.target, file=input.files[0];if(!file)return;
@@ -203,7 +210,7 @@ function modelPage(cat){
 document.addEventListener('click',async e=>{
  const b=e.target.closest('button');if(!b)return;
  try{
-  if(b.dataset.page)gotoPage(b.dataset.page);
+  if(b.dataset.page){if(b.dataset.page==='runs')focusRun='';gotoPage(b.dataset.page)}
   else if(b.hasAttribute('data-key'))await openMemory(b.dataset.key,b.dataset.at,b.dataset.known);
   else if(b.hasAttribute('data-proof'))await openSource(b.dataset.proof,false,+b.dataset.start,+b.dataset.stop);
   else if(b.hasAttribute('data-source'))await openSource(b.dataset.source,!!b.dataset.review);
@@ -223,18 +230,12 @@ dialog.addEventListener('close',()=>dialogSerial++);
 el('mobile-menu').onclick=()=>menu(!document.body.classList.contains('nav-open'));
 el('menu-shade').onclick=()=>menu(false);
 el('add').onclick=()=>addForm();
-el('quick-search').onclick=async()=>{await gotoPage('context');el('context-query')?.focus()};
+el('quick-search').onclick=commandPalette;
 document.addEventListener('keydown',event=>{
  if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='k'&&!dialog.open){event.preventDefault();el('quick-search').click()}
  if(event.key==='Escape'&&document.body.classList.contains('nav-open')){menu(false);el('mobile-menu').focus()}
 });
 matchMedia('(max-width:760px)').addEventListener('change',()=>menu(false));
 window.addEventListener('popstate',()=>gotoPage(location.hash.slice(1)||'overview',false));
-el('workspace').onchange=()=>{
- scope=el('workspace').value;sessionStorage.setItem('gravity-workspace',scope);
- overview={};resetWorkspaceViews();gotoPage('overview');
-};
-(async()=>{
- try{const d=await api('overview');const saved=sessionStorage.getItem('gravity-workspace');scope=['personal','sample'].includes(saved)?saved:(d.has_personal?'personal':'sample')}catch{}
- const initial=location.hash.slice(1);await gotoPage(Object.hasOwn(pages,initial)?initial:'overview',false);
-})();
+el('workspace').onchange=()=>switchSpace(el('workspace').value);
+initializeConsole().catch(error=>{content.innerHTML='<p role="alert" class="err empty">'+safe(error.message)+'</p>';content.setAttribute('aria-busy','false')});

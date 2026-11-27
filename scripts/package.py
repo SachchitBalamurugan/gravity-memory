@@ -18,8 +18,9 @@ def build():
         app.writestr("__main__.py", (ROOT / "scripts" / "desktop.py").read_bytes())
         for path in runtime:
             app.write(path, path.relative_to(ROOT))
-    files = [ROOT / name for name in (".gitignore", "README.md", "RESEARCH.md", "FIELDNOTES.md", "pyproject.toml")]
-    for folder in ("evals", "scripts", "tests", "docs"):
+    files = [ROOT / name for name in (".gitignore", "README.md", "RESEARCH.md", "FIELDNOTES.md", "pyproject.toml",
+                                       ".dockerignore", "Dockerfile", "compose.yaml", "Caddyfile")]
+    for folder in ("evals", "scripts", "tests", "docs", "sdk", "examples"):
         files.extend(files_under(folder))
     with ZipFile(OUT / "gravity-memory-source.zip", "w", compression=ZIP_DEFLATED) as archive:
         for path in files + runtime:
