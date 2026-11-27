@@ -93,6 +93,15 @@ def main():
     pack.add_argument("destination", type=Path)
     pack.add_argument("--with-runtime", action="store_true", help="include the verified cached Windows x64 review runtime")
     model_ops.add_parser("unpack").add_argument("bundle", type=Path)
+    github = commands.add_parser("github", help="connect and sync public GitHub text files")
+    git_ops = github.add_subparsers(dest="action", required=True)
+    git_ops.add_parser("list")
+    connect = git_ops.add_parser("connect")
+    connect.add_argument("repository")
+    connect.add_argument("path")
+    connect.add_argument("--ref", default="")
+    git_ops.add_parser("sync").add_argument("id")
+    git_ops.add_parser("disconnect").add_argument("id")
     commands.add_parser("status")
     commands.add_parser("mcp", help="launch the workspace-bound MCP stdio server")
     serve = commands.add_parser("serve", help="start the local HTTP API using GRAVITY_TOKEN")
@@ -156,6 +165,16 @@ def main():
                     result = suggest(ledger, args.original_id, fields, args.chat_model)
             elif args.command == "import-provider":
                 result = import_records(ledger, args.provider, args.scope, json.loads(args.file.read_bytes()))
+            elif args.command == "github":
+                from . import github_sources
+                if args.action == "list":
+                    result = github_sources.list_files(ledger)
+                elif args.action == "connect":
+                    result = github_sources.connect(ledger, args.repository, args.path, args.ref)
+                elif args.action == "sync":
+                    result = github_sources.sync(ledger, args.id)
+                else:
+                    result = github_sources.disconnect(ledger, args.id)
             elif args.command == "status":
                 result = ledger.status()
             elif args.command == "index-vectors":

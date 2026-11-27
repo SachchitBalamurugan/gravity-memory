@@ -1,3 +1,19 @@
+GITHUB_SCHEMA = """
+CREATE TABLE IF NOT EXISTS github_files (
+    id TEXT PRIMARY KEY,
+    repository TEXT NOT NULL,
+    path TEXT NOT NULL,
+    ref TEXT NOT NULL,
+    blob_sha TEXT NOT NULL,
+    request_id TEXT NOT NULL REFERENCES documents(request_id) ON DELETE CASCADE,
+    source TEXT NOT NULL,
+    last_synced_at TEXT NOT NULL,
+    version TEXT NOT NULL
+);
+"""
+
+UPGRADE_V1 = "BEGIN IMMEDIATE;\n" + GITHUB_SCHEMA + "PRAGMA user_version=2;\nCOMMIT;"
+
 SCHEMA = """
 BEGIN IMMEDIATE;
 CREATE TABLE IF NOT EXISTS documents (
@@ -44,6 +60,7 @@ END;
 CREATE TRIGGER IF NOT EXISTS delete_chunk AFTER DELETE ON chunks BEGIN
     DELETE FROM passage_search WHERE rowid=old.id;
 END;
-PRAGMA user_version=1;
+""" + GITHUB_SCHEMA + """
+PRAGMA user_version=2;
 COMMIT;
 """

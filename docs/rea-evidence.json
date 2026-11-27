@@ -1,0 +1,140 @@
+{
+  "tool": "rea-agents@6.10.1",
+  "method": "analyze-javascript-application, static selected public SDK client modules",
+  "observations": [
+    {
+      "package": "supermemory",
+      "version": "5.1.2",
+      "evidence_id": "ev_eac19112336ecd79e6cac4274bda04e84dbd8b884a8481f454c36c39913d69e7",
+      "artifact_sha256": "55916ab227793be45cc9f3804ad628ed7e6a6857951cb2f4bd3fcc4fc8a37149",
+      "selected_modules": [
+        "dist/esm/generated/api/resources/profiles/client/Client.js",
+        "dist/esm/generated/api/resources/documents/client/Client.js",
+        "dist/esm/generated/api/resources/memories/client/Client.js",
+        "dist/esm/generated/api/resources/connectors/client/Client.js"
+      ],
+      "methods": [
+        {
+          "method": "list",
+          "file": "dist/esm/generated/api/resources/connectors/client/Client.js",
+          "line": 106,
+          "node_id": "jsrg_node_93420c3d2a42406cb401ad3a11ec5a3be38af3b00b8cd0a5f593995316a82527"
+        },
+        {
+          "method": "create",
+          "file": "dist/esm/generated/api/resources/connectors/client/Client.js",
+          "line": 181,
+          "node_id": "jsrg_node_959a00cbdd32e909f63b8e66d7b682dcb522a31debe7c73193d6d21de26bee49"
+        },
+        {
+          "method": "sync",
+          "file": "dist/esm/generated/api/resources/connectors/client/Client.js",
+          "line": 462,
+          "node_id": "jsrg_node_ac3e1df6f79ce218e089afcf7a2cbc356b1f8fc955171898cfdfe39cab605850"
+        },
+        {
+          "method": "batchAdd",
+          "file": "dist/esm/generated/api/resources/documents/client/Client.js",
+          "line": 101,
+          "node_id": "jsrg_node_138244ffea02a3a7c7fd8fa7b7417bfcf7d824cd893d5a094e01a4f19e3acb45"
+        },
+        {
+          "method": "uploadFile",
+          "file": "dist/esm/generated/api/resources/documents/client/Client.js",
+          "line": 316,
+          "node_id": "jsrg_node_8a56411e4f31a2a4addbff8c8ae2f26214b76ac4d6ead078fbbc7c45c492f643"
+        },
+        {
+          "method": "forget",
+          "file": "dist/esm/generated/api/resources/memories/client/Client.js",
+          "line": 34,
+          "node_id": "jsrg_node_e5f69b92cd80eea38064e3b104797725005de1e25ec066257a75060abce7a6a0"
+        },
+        {
+          "method": "getBuckets",
+          "file": "dist/esm/generated/api/resources/profiles/client/Client.js",
+          "line": 34,
+          "node_id": "jsrg_node_5991a05cac386a8db041e31e574a87163431149336ead1028b9437890cdc5cf8"
+        },
+        {
+          "method": "setBuckets",
+          "file": "dist/esm/generated/api/resources/profiles/client/Client.js",
+          "line": 100,
+          "node_id": "jsrg_node_c8acf08e24fe65b2f50691ba2233eefd640e4d40ce45989914ee78c62ef2e891"
+        }
+      ],
+      "limitation": "Caller-selected source analysis leaves 3295 inventoried files outside analysis scope. Inventory identity covers the complete artifact; relationships through unselected sources remain unknown."
+    },
+    {
+      "package": "mem0ai",
+      "version": "3.3.1",
+      "evidence_id": "ev_e51c60785cecd2138935516b9a801a94b8009fc76e6ddde09b41b184a59d496a",
+      "artifact_sha256": "f5d1a0447742c5e78a589f028e67d5c0c2e1cb59b162f61125ca5ec052de7fb5",
+      "selected_modules": [
+        "dist/index.mjs"
+      ],
+      "methods": [
+        {
+          "method": "add",
+          "file": "dist/index.mjs",
+          "line": 608,
+          "node_id": "jsrg_node_2c850109ec7fc31152a1ea5a4cefe767a7eb0f038fa45226f0f544d6758fb6a9"
+        },
+        {
+          "method": "update",
+          "file": "dist/index.mjs",
+          "line": 625,
+          "node_id": "jsrg_node_8fc3ec1143ccfd534dce6595d19f146097d70a79ac1186afc1e33d422092573f"
+        },
+        {
+          "method": "search",
+          "file": "dist/index.mjs",
+          "line": 682,
+          "node_id": "jsrg_node_6ab2254660d0d89225aa8e391854514eb7355077b05f30b6471f8996c1a92b68"
+        },
+        {
+          "method": "history",
+          "file": "dist/index.mjs",
+          "line": 729,
+          "node_id": "jsrg_node_fda8e0096d8fb0f68e2d27efb3eb2e83bfade79b788927ca8f3487c82a14b1b3"
+        },
+        {
+          "method": "getProfile",
+          "file": "dist/index.mjs",
+          "line": 964,
+          "node_id": "jsrg_node_1e56cdc8d1adaffc12409106ef94272eb872f676a41bfb5ad5eaf128611f933c"
+        },
+        {
+          "method": "generateProfile",
+          "file": "dist/index.mjs",
+          "line": 985,
+          "node_id": "jsrg_node_c18969bcc5898bf2f0ea055918a5d460127b970cb0fbfe0ff240576bad243dc6"
+        },
+        {
+          "method": "createMemoryExport",
+          "file": "dist/index.mjs",
+          "line": 1111,
+          "node_id": "jsrg_node_36b7fca16f8c5b761a0a09c3eb98375bf10667dcc17713cb79d1ddf2175541b2"
+        },
+        {
+          "method": "getMemoryExport",
+          "file": "dist/index.mjs",
+          "line": 1131,
+          "node_id": "jsrg_node_aefaa82c9bdec812de78c42b0c9f9df616776ed8c84270a6e7a1b352f9125871"
+        }
+      ],
+      "limitation": "Caller-selected source analysis leaves 12 inventoried files outside analysis scope. Inventory identity covers the complete artifact; relationships through unselected sources remain unknown."
+    }
+  ],
+  "release_inspection": {
+    "tool": "inspect-artifact",
+    "file": "GravityMemory.exe",
+    "evidence_id": "ev_2c3e715d433e158f5bd9ed35e937a5a1737792feae08e23f1cbab71cc7da4ff5",
+    "sha256": "e420da86f564ae41e09423aab7c33c261e068d34b898b41a67a90f0c1fc706ac",
+    "observed_members": [
+      "gravity_memory/web/workspace.js",
+      "gravity_memory/web/studio.css"
+    ],
+    "scope": "Packaged member inventory. Desktop and mobile behavior were separately exercised through Chromium."
+  }
+}

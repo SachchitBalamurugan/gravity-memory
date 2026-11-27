@@ -24,14 +24,33 @@ OPS = {
                  ["request_id", "original_id", "facts"],
                  {"request_id": TEXT, "original_id": TEXT, "facts": {"type": "array", "items": FACT}}),
     "library": ("Browse memory keys and their resolved status.", [], {"limit": INT, "offset": INT}),
+    "profile": ("Read a cited workspace profile grouped by topic. Optional subject is self or relation.<name>. "
+                "The response counts unavailable keys separately. require_review withholds facts with newer unclassified turns.", [],
+                {"limit": INT, "offset": INT, "subject": TEXT, **TIMES}),
+    "context": ("Read standing profile facts, query-matched current facts and original source passages in one call. "
+                "Passages are historical evidence and can include superseded or third-party statements.",
+                ["query"], {"query": TEXT, "limit": INT, "profile_limit": INT, **TIMES,
+                            "retrieval": {"enum": ["auto", "full_text", "facts_only"]}}),
     "sources": ("Browse original sources in this workspace.", [], {"limit": INT, "offset": INT}),
     "lookup": ("Resolve a named fact with source offsets, effective time and ingestion time.",
                ["key"], {"key": TEXT, **TIMES}),
     "search": ("Find current facts or explicitly search historical source passages, which may be obsolete.",
                ["query"], {"query": TEXT, "view": {"enum": ["facts", "archive", "hybrid_archive", "auto_archive"]}, "limit": INT, **TIMES}),
     "history": ("Inspect the evidence for revisions, including superseded or revoked facts.",
-                ["key"], {"key": TEXT, "limit": INT, "offset": INT}),
+                ["key"], {"key": TEXT, "limit": INT, "offset": INT, "as_of": TEXT, "known_at": TEXT}),
     "source": ("Read an original by its request_id.", ["request_id"], {"request_id": TEXT}),
+    "capture_conversation": ("Capture a conversation as an atomic retriable batch of attributed turns.", ["request_id","source","messages"],
+        {"request_id":TEXT,"source":TEXT,"messages":{"type":"array","minItems":1,"maxItems":200,"items":{
+            "type":"object","additionalProperties":False,"required":["role","content"],
+            "properties":{"role":{"enum":["user","assistant"]},"content":TEXT,"effective_at":TEXT}}}}),
+    "import_documents": ("Import local UTF-8 text or Markdown documents supplied by the caller.", ["files"],
+        {"files":{"type":"array","minItems":1,"maxItems":100,"items":{"type":"object","required":["name","text"],
+            "additionalProperties":False,"properties":{"name":TEXT,"text":TEXT,"effective_at":TEXT}}}}),
+    "import_provider": ("Archive records from a scoped Mem0 or Supermemory JSON export.", ["provider","scope","payload"],
+        {"provider":{"enum":["mem0","supermemory"]},"scope":TEXT,"payload":{"anyOf":[{"type":"array"},{"type":"object"}]}}),
+    "retire": ("Retire a known key with an operator reason, preserving its history.", ["key","reason","request_id"],
+        {"key":TEXT,"reason":TEXT,"request_id":TEXT,"effective_at":TEXT}),
+    "connections": ("Find original sources and other memory keys cited in those sources.", ["key"], {"key":TEXT,"limit":INT}),
     "status": ("Count stored sources, passages, assertions and keys.", [], {}),
 }
 
@@ -70,7 +89,7 @@ def rpc(ledger, message):
         supported = ("2025-11-25", "2025-06-18", "2025-03-26", "2024-11-05")
         version = params.get("protocolVersion")
         result = {"protocolVersion": version if version in supported else supported[0],
-                  "capabilities": {"tools": {}}, "serverInfo": {"name": "gravity-memory", "version": "0.2.0"}}
+                  "capabilities": {"tools": {}}, "serverInfo": {"name": "gravity-memory", "version": "0.3.0"}}
     elif method == "ping":
         result = {}
     elif method == "tools/list":

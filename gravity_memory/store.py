@@ -4,12 +4,14 @@ from __future__ import annotations
 import hashlib
 import json
 import sqlite3
+import threading
 from contextlib import closing, contextmanager
 from datetime import datetime, timezone
+from itertools import groupby
 from pathlib import Path
 
-from .language import KEY, extract, search_terms, subject_scope
-from .schema import SCHEMA
+from .language import KEY, contact_scope, extract, matches_contact_scope, search_terms, subject_scope
+from .schema import SCHEMA, UPGRADE_V1
 
 
 class Conflict(ValueError):
@@ -45,6 +47,26 @@ def limit_rows(limit):
     if type(limit) is not int or not 1 <= limit <= 100:
         raise ValueError("limit must be an integer between 1 and 100")
     return limit
+
+
+def _time_bounds(as_of, known_at):
+    now = utc()
+    return (now if as_of is None else utc(as_of),
+            now if known_at is None else utc(known_at))
+
+
+def _revision_status(variants, at):
+    """Resolve the distinct (value, expiry) pairs at a key's last eligible revision."""
+    if not variants:
+        return "unknown"
+    if len(variants) > 1:
+        return "disputed"
+    value, expiry = next(iter(variants))
+    if value is None:
+        return "revoked"
+    if expiry and expiry <= at:
+        return "expired"
+    return "current"
 
 
 def encoded(data):
@@ -101,15 +123,18 @@ class Ledger:
     """Bind this object to an authorized database before accepting any tool arguments."""
     def __init__(self, path, *, embedder=None):
         self.embedder = embedder
+        self._snapshot = threading.local()
         self.path = Path(path).resolve()
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with closing(self._connect()) as db:
             version = db.execute("PRAGMA user_version").fetchone()[0]
-            if version not in (0, 1):
+            if version not in (0, 1, 2):
                 raise ValueError(f"unsupported database version {version}")
             if version == 0:
                 db.execute("PRAGMA journal_mode=WAL")
                 db.executescript(SCHEMA)
+            elif version == 1:
+                db.executescript(UPGRADE_V1)
 
     def _connect(self):
         db = sqlite3.connect(self.path, isolation_level=None, timeout=15)
@@ -120,11 +145,23 @@ class Ledger:
         return db
 
     @contextmanager
-    def _tx(self, write=False):
+    def _tx(self, write=False, *, snapshot=False):
+        # A composite read may call the existing retrieval paths. Bind those reads
+        # to one SQLite snapshot even if another connection imports or erases data.
+        current = getattr(self._snapshot, "connection", None)
+        if current is not None and not write:
+            yield current
+            return
         with closing(self._connect()) as db:
             db.execute("BEGIN IMMEDIATE" if write else "BEGIN")
             with db:
-                yield db
+                if snapshot:
+                    self._snapshot.connection = db
+                try:
+                    yield db
+                finally:
+                    if snapshot:
+                        del self._snapshot.connection
 
     def remember(self, request_id, text, source, *, role="document", effective_at=None, facts=None):
         """Persist an original and both indexes atomically. Only user turns enable the parser."""
@@ -180,6 +217,18 @@ class Ledger:
         return {**receipt, "status": "indexed", "keys": keys, "passages": count, "replayed": replayed}
 
     @staticmethod
+    def _unclassified_turns(db, since, at, known):
+        return db.execute("""
+            SELECT d.request_id,d.effective_at FROM documents d
+            WHERE json_extract(d.payload,'$.role')='user' AND json_type(d.payload,'$.facts')='null'
+              AND d.effective_at BETWEEN ? AND ? AND d.recorded_at<=?
+              AND NOT EXISTS(SELECT 1 FROM facts f WHERE f.doc=d.id)
+              AND NOT EXISTS(SELECT 1 FROM documents r
+                  WHERE json_extract(r.payload,'$.origin')=d.request_id AND r.recorded_at<=?)
+            ORDER BY d.effective_at DESC,d.id DESC LIMIT 3
+        """, (since, at, known, known)).fetchall()
+
+    @staticmethod
     def _resolve(db, key, at, known, require_review=False):
         rows = db.execute(FACT_SELECT + """
             WHERE f.key=? AND f.effective_at=(
@@ -198,25 +247,12 @@ class Ledger:
             if pair not in seen:
                 result["evidence"].append(dict(row))
                 seen.add(pair)
-        if len(variants) > 1:
-            result["status"] = "disputed"
-        elif rows[0]["value"] is None:
-            result["status"] = "revoked"
-        elif rows[0]["expires_at"] and rows[0]["expires_at"] <= at:
-            result["status"] = "expired"
-        else:
-            result.update(status="current", value=rows[0]["value"])
+        result["status"] = _revision_status(variants, at)
+        if result["status"] == "current":
+            result["value"] = rows[0]["value"]
             if require_review:
-                pending = db.execute("""
-                    SELECT d.request_id FROM documents d
-                    WHERE json_extract(d.payload,'$.role')='user' AND json_type(d.payload,'$.facts')='null'
-                      AND d.effective_at BETWEEN ? AND ? AND d.recorded_at<=?
-                      AND NOT EXISTS(SELECT 1 FROM facts f WHERE f.doc=d.id)
-                      AND NOT EXISTS(SELECT 1 FROM documents r
-                          WHERE json_extract(r.payload,'$.origin')=d.request_id AND r.recorded_at<=?)
-                    ORDER BY d.effective_at DESC,d.id DESC LIMIT 3
-                """, (rows[0]["effective_at"], at, known, known))
-                outstanding = [p[0] for p in pending]
+                pending = Ledger._unclassified_turns(db, rows[0]["effective_at"], at, known)
+                outstanding = [p["request_id"] for p in pending]
                 if outstanding:
                     result.update(status="pending_review", value=None, pending_sources=outstanding)
         return result
@@ -228,13 +264,94 @@ class Ledger:
                 raise ValueError("require_review must be a boolean")
             return self._resolve(db, valid_key(key), utc(as_of), utc(known_at), require_review)
 
-    def history(self, key, *, limit=50, offset=0):
+    def profile(self, *, limit=24, offset=0, as_of=None, known_at=None, subject=None, require_review=False):
+        """Read the workspace's current, cited facts, grouped by canonical key prefix."""
+        limit_rows(limit)
         if type(offset) is not int or not 0 <= offset < 2**63:
             raise ValueError("offset must be a nonnegative integer")
+        if type(require_review) is not bool:
+            raise ValueError("require_review must be a boolean")
+        at, known = _time_bounds(as_of, known_at)
+        parameters = {"at": at, "known": known}
+        subject_filter = ""
+        if subject == "self":
+            subject_filter = "AND f.key NOT GLOB 'relation.*'"
+        elif subject is not None:
+            if not valid_key(subject).startswith("relation.") or subject.count(".") != 1:
+                raise ValueError("subject must be self or relation.<name>")
+            subject_filter = "AND f.key GLOB :subject"
+            parameters["subject"] = subject + ".*"
+
+        groups = {}
+        excluded = {}
+        total = 0
         with self._tx() as db:
-            return [dict(r) for r in db.execute(FACT_SELECT + """
-                WHERE f.key=? ORDER BY f.effective_at DESC, f.id DESC LIMIT ? OFFSET ?
-            """, (valid_key(key), limit_rows(limit), offset))]
+            pending = self._unclassified_turns(db, "", at, known) if require_review else []
+            variants = db.execute(f"""
+                WITH latest AS (
+                    SELECT f.key, max(f.effective_at) AS effective_at
+                    FROM facts f JOIN documents d ON d.id=f.doc
+                    WHERE f.effective_at<=:at AND d.recorded_at<=:known {subject_filter}
+                    GROUP BY f.key
+                )
+                SELECT DISTINCT f.key,f.value,f.expires_at,f.effective_at
+                FROM latest JOIN facts f USING(key,effective_at) JOIN documents d ON d.id=f.doc
+                WHERE d.recorded_at<=:known
+                ORDER BY f.key='profile.name' DESC, f.effective_at DESC, f.key
+            """, parameters)
+            for (key, revision), rows in groupby(variants, key=lambda row: (row["key"], row["effective_at"])):
+                status = _revision_status({(r["value"], r["expires_at"]) for r in rows}, at)
+                if status == "current" and pending and revision <= pending[0]["effective_at"]:
+                    status = "pending_review"
+                if status != "current":
+                    excluded[status] = excluded.get(status, 0) + 1
+                    continue
+                if offset <= total < offset + limit:
+                    topic = ".".join(key.split(".")[:2]) if key.startswith("relation.") else key.split(".", 1)[0]
+                    groups.setdefault(topic, []).append(self._resolve(db, key, at, known))
+                total += 1
+        return {"groups": [{"topic": topic, "items": items} for topic, items in groups.items()],
+                "total": total, "more": offset + limit < total, "excluded": excluded,
+                "as_of": at, "known_at": known}
+
+    def context(self, query, *, limit=5, retrieval="auto", profile_limit=6, as_of=None, known_at=None, require_review=False):
+        """Read a scoped profile, matching current facts and historical passages in one snapshot."""
+        string(query, "query", 2048)
+        limit_rows(limit)
+        limit_rows(profile_limit)
+        if retrieval not in ("auto", "full_text", "facts_only"):
+            raise ValueError("retrieval must be auto, full_text, or facts_only")
+        at, known = _time_bounds(as_of, known_at)
+        scope = subject_scope(query)
+        with self._tx(snapshot=True):
+            profile = self.profile(limit=profile_limit, as_of=at, known_at=known, require_review=require_review,
+                                   subject=scope.rstrip(".") if scope else None)
+            facts = self.search(query, view="facts", limit=limit, as_of=at, known_at=known,
+                                require_review=require_review)["results"]
+            archive = {"results": [], "route": "facts_only", "reason": "archive retrieval disabled"}
+            if retrieval == "auto":
+                archive = self.search(query, view="auto_archive", limit=limit, as_of=at, known_at=known)
+            elif retrieval == "full_text":
+                archive = self.search(query, view="archive", limit=limit, as_of=at, known_at=known)
+                archive.update(route="full_text", reason="explicit full-text retrieval")
+        return {"query": query, "profile": profile, "facts": facts, "passages": archive["results"],
+                "route": archive["route"], "reason": archive["reason"], "as_of": at, "known_at": known,
+                **{key: archive[key] for key in ("model", "indexed_passages", "eligible_passages") if key in archive}}
+
+    def history(self, key, *, limit=50, offset=0, as_of=None, known_at=None):
+        if type(offset) is not int or not 0 <= offset < 2**63:
+            raise ValueError("offset must be a nonnegative integer")
+        conditions, parameters = ["f.key=?"], [valid_key(key)]
+        if as_of is not None:
+            conditions.append("f.effective_at<=?")
+            parameters.append(utc(as_of))
+        if known_at is not None:
+            conditions.append("d.recorded_at<=?")
+            parameters.append(utc(known_at))
+        with self._tx() as db:
+            return [dict(r) for r in db.execute(FACT_SELECT + " WHERE " + " AND ".join(conditions) +
+                    " ORDER BY f.effective_at DESC, f.id DESC LIMIT ? OFFSET ?",
+                    (*parameters, limit_rows(limit), offset))]
 
     def source(self, request_id):
         with self._tx() as db:
@@ -285,12 +402,15 @@ class Ledger:
                 ORDER BY rank, f.id DESC
             """, (match, at, known, at, known))
             subject = subject_scope(query)
+            contact = contact_scope(query)
             seen = set()
             for row in matches:
                 key = row["key"]
                 if subject == "self" and key.startswith("relation."):
                     continue
                 if subject and subject != "self" and not key.startswith(subject):
+                    continue
+                if not matches_contact_scope(key, contact):
                     continue
                 if key in seen:
                     continue
@@ -438,6 +558,31 @@ class Ledger:
             if sealed and not footer:
                 raise ValueError("incomplete export: missing footer")
             return {"restored": count}
+
+    def capture_conversation(self, request_id, source, messages):
+        from .ingestion import capture_conversation
+        return capture_conversation(self, request_id, source, messages)
+
+    def import_documents(self, files):
+        from .ingestion import import_documents
+        return import_documents(self, files)
+
+    def import_provider(self, provider, scope, payload):
+        from .importers import import_records
+        return import_records(self, provider, scope, payload)
+
+    def retire(self, key, reason, request_id, *, effective_at=None):
+        key = valid_key(key)
+        reason = string(reason, "reason", 2048)
+        with self._tx(write=True) as db:
+            if db.execute("SELECT 1 FROM facts WHERE key=? LIMIT 1", (key,)).fetchone() is None:
+                raise ValueError("Choose an existing memory key to retire.")
+            return self._remember(db, request_id, reason, "Operator decision", "document", effective_at,
+                                  [{"key": key, "value": None, "quote": reason}], utc())
+
+    def connections(self, key, *, limit=12):
+        from .connections import connections
+        return connections(self, key, limit=limit)
 
     def erase(self):
         """Logical whole-workspace erase, including sources, history, receipts and searchable content."""

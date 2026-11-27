@@ -1,7 +1,43 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#050507"><title>Gravity Memory</title><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/studio.css"><script src="/field.js" defer></script><script src="/studio.js" defer></script></head>
-<body><a class="skip" href="#main">Skip to workspace</a>
-<aside id="side"><div class="wordmark"><i class="brandmark"></i><strong>Gravity<span> Memory</span></strong></div><div class="group-title">Workspace</div><nav id="navigation" aria-label="Workspace"></nav><div class="sidefoot"><i class="led"></i><div>Local engine<small>On this device</small></div></div></aside>
-<div class="shell"><header><button id="mobile-menu" class="icon-only" aria-label="Toggle navigation" aria-expanded="false" aria-controls="side">☰</button><div class="crumb">Workspace <b>/</b> <span id="crumb">Overview</span></div><div class="tools"><select id="workspace" aria-label="Workspace"><option value="personal">My workspace</option><option value="sample">Sample workspace</option></select></div></header>
-<main id="main" tabindex="-1"><div class="pagehead"><h1 id="title">Memory overview</h1><button class="primary" id="add">＋ Add source</button></div><div id="content" aria-live="off"></div></main></div>
-<dialog id="detail" aria-labelledby="dialog-title"><div class="dialoghead"><h2 id="dialog-title"></h2><button class="icon-only" id="close" aria-label="Close dialog">×</button></div><div id="dialog-content"></div></dialog><div id="message" role="status" aria-live="polite"></div></body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#16181b">
+  <title>Gravity Memory</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/studio.css">
+  <script src="/workspace.js" defer></script>
+  <script src="/studio.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to workspace</a>
+<aside id="side">
+  <div class="wordmark"><img src="/favicon.ico" width="35" height="35" alt=""><strong>Gravity <span>Memory</span></strong></div>
+  <nav id="navigation" aria-label="Workspace navigation"></nav>
+  <div class="sidefoot"><span class="live-indicator"></span><div>Local engine<small>Running on this device</small></div></div>
+</aside>
+<button id="menu-shade" aria-label="Close navigation" tabindex="-1" hidden></button>
+<div class="shell">
+  <header>
+    <button id="mobile-menu" class="icon-only" aria-label="Toggle navigation" aria-controls="side" aria-expanded="false">☰</button>
+    <div class="crumb"><span>Workspace</span><b>/</b><strong id="crumb">Overview</strong></div>
+    <div class="tools">
+      <button class="global-search" id="quick-search" aria-label="Search workspace"><span aria-hidden="true">⌕</span><span>Search workspace</span><kbd>Ctrl K</kbd></button>
+      <label class="space-select"><span aria-hidden="true" class="scope-dot"></span><select id="workspace" aria-label="Workspace"><option value="personal">My workspace</option><option value="sample">Sample workspace</option></select></label>
+    </div>
+  </header>
+  <main id="main" tabindex="-1">
+    <div class="pagehead"><div><h1 id="title">Workspace overview</h1><p id="subtitle"></p></div>
+      <div class="pageactions"><button class="secondary" data-page="import" id="import-shortcut">Import data</button><button class="primary" id="add">＋ Add source</button></div>
+    </div>
+    <div id="content" aria-busy="true"></div>
+  </main>
+</div>
+<dialog id="detail" aria-labelledby="dialog-title">
+  <div class="dialoghead"><h2 id="dialog-title"></h2><button class="icon-only" id="close" aria-label="Close dialog">×</button></div>
+  <div id="dialog-content"></div>
+</dialog>
+<div id="message" role="status" aria-live="polite"></div>
+</body>
+</html>

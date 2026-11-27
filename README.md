@@ -4,7 +4,7 @@ A local memory workspace for agents that need to answer **what is current, when 
 
 ## Open the workspace
 
-On Windows x64, double-click **dist/GravityMemory.exe**. It opens the studio in the default browser and stores personal records in `%LOCALAPPDATA%\GravityMemory\workspace.sqlite`. Keep its console open while using the studio. The executable includes Python, SQLite and the optional semantic-search libraries. Actual model weights install on demand. From a source checkout use the following command with Python 3.11 or newer.
+On Windows x64, open **GravityMemory.exe** from the [latest release](https://github.com/SachchitBalamurugan/gravity-memory/releases/latest). It opens the studio in the default browser and stores personal records in `%LOCALAPPDATA%\GravityMemory\workspace.sqlite`. Keep its console open while using the studio. The executable includes Python, SQLite and the optional semantic-search libraries. Actual model weights install on demand. From a source checkout use the following command with Python 3.11 or newer.
 
 ```powershell
 python -m gravity_memory --db .ledger/workspace.sqlite studio
@@ -13,6 +13,15 @@ python -m gravity_memory --db .ledger/workspace.sqlite studio
 A fresh studio opens an isolated sample. Open **contact.channel**, follow its citation and inspect the earlier value. Choose **My workspace** before adding sources you want to keep. The source form accepts an effective date for older conversations. Review inbox lets an operator confirm a quoted fact or dismiss the source. The library, archive and timeline use the same engine exposed to agents over HTTP or MCP.
 
 ![Gravity Memory desktop workspace](docs/overview.png)
+
+## Work with the platform
+
+- **Memory profile** groups current, cited facts by topic. Inspect the profile on a particular date, scope it to a person, and open a value to see its timeline and shared sources.
+- **Context explorer** combines ranked facts, the workspace profile and original passages. Choose automatic retrieval, full text, or facts only. Open the highlighted source or copy the response for an agent. Historical passages can contain outdated statements.
+- **Import data** accepts local text and Markdown, multi-turn conversations and scoped Mem0 or Supermemory export pages. Capturing a conversation preserves who spoke and when each turn happened. Retrying an identical batch returns its original receipts.
+- **GitHub connections** capture a selected public text file by repository, path, and optional branch/tag. Sync again to capture changed content. Earlier revisions stay in the archive. Disconnecting ends the connection. Workspace export/restore transfers stored records. Connection settings can be recreated on a new machine.
+
+An operator can retire a memory with a recorded reason. Its earlier revisions stay available in history. Explicit conditional contact instructions such as “On call I prefer PagerDuty” have their own keys. Asking for the default contact channel still resolves the unconditional preference. [Operations, design choices, and verification](docs/platform.md)
 
 ## Local model library
 
@@ -39,7 +48,7 @@ The Windows executable includes the semantic extra. Other Python installations c
 
 ## Results
 
-On the internal correction replay, the default engine ranked the correct value first on 12/18 answerable questions, exposed an obsolete value on 0/11 correction probes and returned empty on 9/9 unknowns. On 120 public LoCoMo questions, hybrid and full-text retrieval found at least one gold turn in 76 and 73 cases respectively. Both recovered every gold turn in 58 cases. These are retrieval measurements. General superiority over vendor products and willingness to pay remain untested. [Research and test findings](FIELDNOTES.md) · [Competitor code and customer discovery](RESEARCH.md) · [Storage measurements](evals/gravity-scale-results.json)
+On the internal correction replay, the default engine ranked the correct value first on 14/18 answerable questions, exposed an obsolete value on 0/11 correction probes and returned empty on 9/9 unknowns. On 120 public LoCoMo questions, hybrid and full-text retrieval found at least one gold turn in 76 and 73 cases respectively. Both recovered every gold turn in 58 cases. These are retrieval measurements. General superiority over vendor products and willingness to pay remain untested. [0.3 correction replay](evals/platform-results.json) · [Earlier research and test findings](FIELDNOTES.md) · [Competitor code and customer discovery](RESEARCH.md) · [Storage measurements](evals/gravity-scale-results.json)
 
 ## Try a correction
 
@@ -106,10 +115,10 @@ Choose single-valued field names. Two concurrent roles can use distinct keys suc
 An original can be searchable before an operator knows which facts to promote. This example handles a sentence outside the default grammar.
 
 ```powershell
-python -m gravity_memory --db .ledger/demo.sqlite add --id turn-3 --source chat/3 --role user --text "These days I call Ghent home."
+python -m gravity_memory --db .ledger/demo.sqlite add --id turn-3 --source chat/3 --role user --text "I signed a new lease in Ghent."
 python -m gravity_memory --db .ledger/demo.sqlite pending
 python -m gravity_memory --db .ledger/demo.sqlite lookup home.city --require-review
-python -m gravity_memory --db .ledger/demo.sqlite annotate turn-3 --id review-3 --key home.city --value Ghent --quote "I call Ghent home"
+python -m gravity_memory --db .ledger/demo.sqlite annotate turn-3 --id review-3 --key home.city --value Ghent --quote "new lease in Ghent"
 python -m gravity_memory --db .ledger/demo.sqlite lookup home.city
 ```
 
@@ -119,7 +128,7 @@ For optional model-assisted review, create `fields.json` with definitions such a
 
 ## Use from other tools
 
-**MCP over stdio.** Point an MCP client at Python and the portable application. This example uses absolute Windows paths. Change the database path to bind the tool server to the intended workspace. It advertises remember, lookup, search, history, source, pending, annotate and status. Use separate server configurations for separate customers.
+**MCP over stdio.** Point an MCP client at Python and the portable application. This example uses absolute Windows paths. Change the database path to bind the tool server to the intended workspace. It advertises capture, import, profile, context, lookup, connection, review, and retirement tools alongside the original read/write operations. Use separate server configurations for separate customers.
 
 ```json
 {
@@ -175,7 +184,7 @@ The indexer discovers missing vectors from committed sources, validates each bat
 
 ```powershell
 python -m unittest discover -s tests -v
-python -m evals.run --out evals/gravity-results.json
+python -m evals.run --out evals/platform-results.json
 python -m evals.scale --out evals/gravity-scale-results.json
 python -m evals.local_models --out evals/model-results.json
 python -m evals.locomo PATH_TO_PINNED_LOCOMO10_JSON --out evals/locomo-results.json

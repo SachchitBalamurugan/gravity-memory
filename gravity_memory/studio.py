@@ -13,7 +13,7 @@ from pathlib import Path
 import threading
 import webbrowser
 
-from . import models
+from . import github_sources, models
 from .runtime import MiniLM, route_review
 from .semantic import index_passages
 from .service import dispatch, OPS
@@ -80,6 +80,14 @@ class Studio:
             return {"counts": db.status(), "recent": db.sources(limit=5)["items"],
                     "memories": db.library(limit=12)["items"], "pending": db.pending_count(),
                     "workspace": scope, "has_personal": self.stores["personal"].status()["documents"] > 0}
+        if op == "github_list":
+            return github_sources.list_files(db)
+        if op == "github_connect":
+            return github_sources.connect(db, args.get("repository"), args.get("path"), args.get("ref", ""))
+        if op == "github_sync":
+            return github_sources.sync(db, args.get("id"))
+        if op == "github_disconnect":
+            return github_sources.disconnect(db, args.get("id"))
         if op == "catalog":
             return models.inventory()
         if op == "routing":
@@ -188,7 +196,7 @@ def studio_server(ledger, port=0):
             if self.path.startswith("/packs/"):
                 return self.send_pack(self.path[7:])
             names = {"/":("index.html","text/html; charset=utf-8"), "/studio.css":("studio.css","text/css"),
-                     "/studio.js":("studio.js","text/javascript"), "/field.js":("field.js","text/javascript"),
+                     "/studio.js":("studio.js","text/javascript"), "/workspace.js":("workspace.js","text/javascript"),
                      "/favicon.ico":("icon.png","image/png")}
             if self.path not in names:
                 return self.output(404, {"error":"unknown resource"})

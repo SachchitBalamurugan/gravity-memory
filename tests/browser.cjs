@@ -24,11 +24,41 @@ async function run(){
     page.on('pageerror',e=>errors.push(e.message));
     page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
     await page.goto(url);
-    await page.getByRole('heading',{name:'Memory field'}).waitFor();
+    await page.getByRole('heading',{name:'Workspace profile'}).waitFor();
     const shots=process.env.GRAVITY_SCREENSHOTS;
     if(shots){fs.mkdirSync(shots,{recursive:true});await page.screenshot({path:path.join(shots,'overview.png')})}
     assert.equal(await page.locator('#workspace').inputValue(),'sample');
     const nav=name=>page.locator('#navigation').getByRole('button',{name});
+    await nav('Memory profile').click();
+    await page.getByRole('heading',{name:'Current facts'}).waitFor();
+    const profileKey=page.locator('.topic [data-key="contact.channel"]');
+    assert.match(await profileKey.innerText(),/Signal/);
+    await page.locator('#profile-at').fill('2026-01-07');
+    await page.getByRole('button',{name:'Apply filters'}).click();
+    await page.getByRole('button',{name:/^email/}).waitFor();
+    await page.getByRole('button',{name:/^email/}).click();
+    await page.locator('.big').getByText('email',{exact:true}).waitFor();
+    await page.keyboard.press('Escape');
+    await page.keyboard.press('Control+k');
+    await page.locator('#context-query').fill('contact');
+    await page.getByRole('button',{name:'Run search'}).click();
+    await page.locator('.context-fact').first().waitFor();
+    assert.match(await page.locator('.context-fact').first().innerText(),/Signal/);
+    await page.locator('.context-fact [data-proof]').first().click();
+    await page.locator('#original mark').getByText(/Signal/).waitFor();
+    await page.keyboard.press('Escape');
+    if(shots)await page.screenshot({path:path.join(shots,'context.png')});
+    await page.locator('#context-route').selectOption('facts_only');
+    await page.locator('.context-options summary').click();
+    await page.locator('#context-known').fill('2020-01-01');
+    await page.getByRole('button',{name:'Run search'}).click();
+    await page.getByText('No matching current facts.').waitFor();
+    await page.locator('.raw-response summary').click();
+    const response=JSON.parse(await page.locator('#context-json').innerText());
+    assert.equal(response.route,'facts_only');
+    assert.equal(response.known_at.slice(0,10),'2020-01-01');
+    assert.equal(response.facts.length,0);
+    assert.equal(response.passages.length,0);
     await nav('Model library').click();
     await page.getByRole('heading',{name:'SmolLM2'}).waitFor();
     if(shots)await page.screenshot({path:path.join(shots,'models.png')});
@@ -37,7 +67,7 @@ async function run(){
     await page.getByRole('button',{name:'Save routing'}).click();
     await page.getByText('Local routing saved',{exact:true}).waitFor();
     await nav('Overview').click();
-    await page.getByRole('heading',{name:'Memory field'}).waitFor();
+    await page.getByRole('heading',{name:'Workspace profile'}).waitFor();
     await page.locator('#workspace').selectOption('personal');
     await page.getByText('Add a source to start your archive.').waitFor();
     const capture=async(body,date)=>{
@@ -118,8 +148,62 @@ async function run(){
       await page.locator('#searchform button').first().click();
       await page.getByText(/hybrid · matching embedding index/).waitFor();
     }
+
+    await nav('Import data').click();
+    const files = [
+      {name:'Runbook.md',mimeType:'text/markdown',buffer:Buffer.from('Retention window for import evidence is 45 days.')},
+      {name:'Caption.txt',mimeType:'text/plain',buffer:Buffer.from('The printer lives in the west hall.')}
+    ];
+    await page.locator('#documents').setInputFiles(files);
+    await page.getByRole('button',{name:'Import documents',exact:true}).click();
+    await page.locator('.receipt').getByText('2 imported · 0 already present').waitFor();
+    await page.locator('#documents').setInputFiles(files);
+    await page.getByRole('button',{name:'Import documents',exact:true}).click();
+    await page.locator('.receipt').getByText('0 imported · 2 already present').waitFor();
+    await page.getByRole('button',{name:'Conversation',exact:true}).click();
+    const turns = [{role:'user',content:'My name is Vela. Please contact me via pager.',effective_at:'2026-01-01T00:00:00Z'},
+      {role:'assistant',content:'My name is Jupiter.'}];
+    await page.locator('#transcript-file').setInputFiles({name:'Renewal.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify({messages:turns}))});
+    await page.locator('#thread-name').fill('Renewal call');
+    assert.equal(await page.locator('[data-turn-body]').count(),2);
+    await page.getByRole('button',{name:'Add turn'}).click();
+    await page.locator('[data-turn-role]').last().selectOption('user');
+    await page.locator('[data-turn-body]').last().fill('The next check-in is Friday.');
+    await page.getByRole('button',{name:'Save conversation'}).click();
+    await page.locator('.receipt').getByText('3 imported · 0 already present').waitFor();
+    await page.getByRole('button',{name:'Provider export',exact:true}).click();
+    await page.locator('#provider-scope').fill('account-1');
+    const exportRows=[{id:'a',memory:'Imported service ticket.',user_id:'account-1',created_at:'2025-04-01T00:00:00Z'},
+      {id:'b',memory:'Another account.',user_id:'account-2',created_at:'2025-04-01T00:00:00Z'}];
+    await page.locator('#provider-file').setInputFiles({name:'mem0.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify({results:exportRows}))});
+    await page.getByRole('button',{name:'Import records'}).click();
+    await page.locator('.receipt').getByText('1 imported · 0 already present · 1 outside scope').waitFor();
+    await page.getByRole('button',{name:'GitHub',exact:true}).click();
+    await page.getByText('No connected files in this workspace.').waitFor();
+    await page.locator('#repository').fill('invalid-repo');
+    await page.locator('#repo-path').fill('README.md');
+    await page.getByRole('button',{name:'Connect file'}).click();
+    await page.locator('#import-error').getByText('Enter a repository as owner/repository.').waitFor();
+    await nav('Memory profile').click();
+    await page.locator('.topic [data-key="profile.name"]').getByText(/Vela/).waitFor();
+    await page.locator('.topic [data-key="profile.name"]').click();
+    await page.getByRole('heading',{name:'Evidence connections'}).waitFor();
+    await page.locator('.connections button[data-key="contact.channel"]').click();
+    await page.locator('.big').getByText('pager',{exact:true}).waitFor();
+    await page.getByRole('button',{name:'Retire memory'}).click();
+    await page.getByRole('button',{name:'Cancel',exact:true}).click();
+    await page.locator('.big').getByText('pager',{exact:true}).waitFor();
+    await page.getByRole('button',{name:'Retire memory'}).click();
+    await page.locator('#retire-reason').fill('Customer retired their pager.');
+    await page.getByRole('button',{name:'Confirm retirement'}).click();
+    await page.locator('dialog').waitFor({state:'hidden'});
+    await nav('Memory library').click();
+    await page.locator('.row[data-key="contact.channel"]').getByText('revoked',{exact:false}).waitFor();
+    await page.locator('.row[data-key="contact.channel"]').click();
+    await page.locator('blockquote').getByText('Customer retired their pager.',{exact:true}).waitFor();
+    await page.keyboard.press('Escape');
     await page.locator('#workspace').selectOption('sample');
-    await page.getByRole('heading',{name:'Memory field'}).waitFor();
+    await page.getByRole('heading',{name:'Workspace profile'}).waitFor();
     await page.setViewportSize({width:390,height:844});
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,'mobile width');
     await page.locator('#mobile-menu').click();
@@ -127,7 +211,12 @@ async function run(){
     await page.locator('.row').first().click();
     await page.locator('#asof').waitFor();
     await page.keyboard.press('Escape');
-    if(shots){await page.locator('#message.show').waitFor({state:'hidden'});await page.locator('#mobile-menu').click();await nav('Overview').click();await page.getByRole('heading',{name:'Memory field'}).waitFor();await page.screenshot({path:path.join(shots,'mobile.png')})}
+    for(const [section,heading] of [['Context explorer','Context explorer'],['Import data','Import documents'],['Model library','Model library']]){
+      await page.locator('#mobile-menu').click();await nav(section).click();
+      await page.getByRole('heading',{name:heading,exact:true}).waitFor();
+      assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,section+' mobile width');
+    }
+    if(shots){await page.locator('#message.show').waitFor({state:'hidden'});await page.locator('#mobile-menu').click();await nav('Overview').click();await page.getByRole('heading',{name:'Workspace profile'}).waitFor();await page.screenshot({path:path.join(shots,'mobile.png')})}
     assert.deepEqual(errors,[]);
     console.log('Desktop and mobile customer journeys passed. No browser errors.');
   } finally {

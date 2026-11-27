@@ -14,14 +14,37 @@ PATTERNS = {
     "contact.channel": [r"(?:My preferred contact (?:channel|method) is|Please contact me (?:via|by)) " + VALUE],
     "profile.name": [r"My name is " + VALUE],
 }
+# Context is part of the fact key. Instructions for a shift or day of the
+# week must not overwrite an unconditional contact preference.
+CONTACT_CONTEXTS = {
+    "on_call": r"on[- ]call",
+    "outside_work": r"outside (?:of )?work|after[- ]hours",
+    "at_work": r"at work|during (?:work|business) hours",
+    "weekends": r"(?:on )?weekends",
+    "weekdays": r"(?:on )?weekdays",
+}
+CHANNEL_NAMES = r"(?:e-?mail|phone|text|sms|slack|signal|matrix|pagerduty|teams|whatsapp|telegram|discord|pager)"
+for name, condition in CONTACT_CONTEXTS.items():
+    condition = r"(?:(?:when|while) I(?: am|'m|’m) )?(?:" + condition + r")"
+    explicit = r"(?:please )?(?:(?:contact|reach|message) me (?:via|by|on|using)|my preferred contact channel is) "
+    shorthand = r"(?:I prefer|please use|use) (?P<value>" + CHANNEL_NAMES + r")"
+    PATTERNS["contact.channel." + name] = [
+        condition + r"\s*,?\s+" + explicit + VALUE,
+        condition + r"\s*,?\s+" + shorthand,
+        explicit + VALUE + r"\s+" + condition,
+        shorthand + r"\s+" + condition,
+    ]
+
 for suffix, verb in [("home.city", "lives in"), ("work.employer", "works (?:at|for)")]:
     PATTERNS["relation." + suffix] = [rf"My (?P<relation>{RELATION}) {verb} " + VALUE]
-RULES = [(key, re.compile(pattern, re.I)) for key, patterns in PATTERNS.items() for pattern in patterns]
+RULES = [(key, re.compile(pattern, re.I)) for key, patterns in
+         sorted(PATTERNS.items(), key=lambda item: not item[0].startswith("contact.channel."))
+         for pattern in patterns]
 HINTS = {
     "city": {"live", "lives", "residence", "reside", "city", "moved", "based"},
     "employer": {"employer", "company", "employed", "workplace", "employs"},
     "timezone": {"timezone", "zone", "tz"},
-    "channel": {"contact", "reach", "channel"},
+    "channel": {"contact", "contacted", "reached", "reach", "channel"},
     "name": {"name", "called"},
 }
 UNCERTAIN = re.compile(
@@ -33,6 +56,28 @@ STOP = set("a an the to do does i my me our is are was where what which how can 
 
 def tokens(text):
     return re.findall(r"[^\W_]+", unicodedata.normalize("NFKC", text).casefold())
+
+
+def contact_scope(query):
+    canonical = re.fullmatch(r"contact\.channel\.(\w+)", query.strip(), re.I)
+    if canonical and canonical[1].lower() in CONTACT_CONTEXTS:
+        return canonical[1].lower()
+    if re.search(r"\b(?:not|never)\s+(?:at work|on[- ]call|on (?:weekdays|weekends))\b", query, re.I):
+        return "ambiguous"
+    matches = [name for name, pattern in CONTACT_CONTEXTS.items()
+               if re.search(r"\b(?:" + pattern + r")\b", query, re.I)]
+    if len(matches) > 1:
+        return "ambiguous"
+    return matches[0] if matches else None
+
+
+def matches_contact_scope(key, scope):
+    if key == "contact.channel":
+        return scope is None
+    prefix = "contact.channel."
+    if key.startswith(prefix) and key[len(prefix):] in CONTACT_CONTEXTS:
+        return key == prefix + str(scope)
+    return True
 
 
 def subject_scope(query):
@@ -68,6 +113,8 @@ def extract(text):
         for key, pattern in RULES:
             match = pattern.fullmatch(phrase)
             if not match or UNCERTAIN.search(match["value"]) or len(match["value"].split()) > 5:
+                continue
+            if key.startswith("contact.channel") and contact_scope(match["value"]) is not None:
                 continue
             relation = match.groupdict().get("relation")
             if relation:
