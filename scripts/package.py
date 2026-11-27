@@ -15,10 +15,11 @@ def build():
     OUT.mkdir(exist_ok=True)
     runtime = files_under("gravity_memory") + files_under("recall_ledger")
     with ZipFile(OUT / "gravity-memory.pyz", "w", compression=ZIP_DEFLATED) as app:
+        app.write(ROOT / "LICENSE", "LICENSE")
         app.writestr("__main__.py", (ROOT / "scripts" / "desktop.py").read_bytes())
         for path in runtime:
             app.write(path, path.relative_to(ROOT))
-    files = [ROOT / name for name in (".gitignore", "README.md", "RESEARCH.md", "FIELDNOTES.md", "pyproject.toml",
+    files = [ROOT / name for name in (".gitignore", "README.md", "LICENSE", "RESEARCH.md", "FIELDNOTES.md", "pyproject.toml",
                                        ".dockerignore", "Dockerfile", "compose.yaml", "Caddyfile")]
     for folder in ("evals", "scripts", "tests", "docs", "sdk", "examples"):
         files.extend(files_under(folder))

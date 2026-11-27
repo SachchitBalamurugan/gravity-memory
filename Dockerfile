@@ -2,7 +2,7 @@ FROM python:3.12-slim
 RUN apt-get update && apt-get install -y --no-install-recommends openssl && rm -rf /var/lib/apt/lists/* \
     && useradd --create-home --uid 10001 gravity && install -d -o gravity -g gravity -m 0700 /data
 WORKDIR /app
-COPY pyproject.toml README.md ./
+COPY pyproject.toml README.md LICENSE ./
 COPY gravity_memory ./gravity_memory
 COPY recall_ledger ./recall_ledger
 RUN pip install --no-cache-dir ".[connectors]"

@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def collect_notices(folder):
     folder.mkdir()
+    shutil.copyfile(ROOT / "LICENSE", folder / "Gravity-Memory.txt")
     python_license = Path(sys.base_prefix) / "LICENSE.txt"
     shutil.copyfile(python_license, folder / "Python.txt")
     packages = []
