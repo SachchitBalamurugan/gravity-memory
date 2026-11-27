@@ -1,0 +1,247 @@
+[
+  {
+    "case": "contact-change",
+    "messages": [
+      "My preferred contact channel is email.",
+      "I usually check my inbox twice a day.",
+      "Please contact me via Signal."
+    ],
+    "queries": [
+      [
+        "What is my preferred contact channel?",
+        "Signal",
+        [
+          "email"
+        ]
+      ],
+      [
+        "How should you reach me?",
+        "Signal",
+        [
+          "email"
+        ]
+      ],
+      [
+        "What is my shoe size?",
+        null,
+        []
+      ]
+    ]
+  },
+  {
+    "case": "move-and-job",
+    "messages": [
+      "I live in Utrecht.",
+      "My employer is Windmill.",
+      "I moved to Bremen.",
+      "I now work at Northbank."
+    ],
+    "queries": [
+      [
+        "What city do I live in?",
+        "Bremen",
+        [
+          "Utrecht"
+        ]
+      ],
+      [
+        "Who is my employer?",
+        "Northbank",
+        [
+          "Windmill"
+        ]
+      ],
+      [
+        "Which company employs me?",
+        "Northbank",
+        [
+          "Windmill"
+        ]
+      ],
+      [
+        "What is my timezone?",
+        null,
+        []
+      ]
+    ]
+  },
+  {
+    "case": "identity",
+    "messages": [
+      "My name is Lucía.",
+      "My name is Carmen.",
+      "My time zone is Europe/Madrid."
+    ],
+    "queries": [
+      [
+        "What is my name?",
+        "Carmen",
+        [
+          "Lucía"
+        ]
+      ],
+      [
+        "Which timezone am I in?",
+        "Europe/Madrid",
+        []
+      ],
+      [
+        "What language do I speak?",
+        null,
+        []
+      ]
+    ]
+  },
+  {
+    "case": "domain-decisions",
+    "messages": [
+      "The export service runs on Alder.",
+      "After the migration the export service runs on Cedar.",
+      "The support team's escalation code is PEBBLE-42."
+    ],
+    "queries": [
+      [
+        "Where does the export service run?",
+        "Cedar",
+        [
+          "Alder"
+        ]
+      ],
+      [
+        "What is the escalation code?",
+        "PEBBLE-42",
+        []
+      ],
+      [
+        "What is our recovery interval?",
+        null,
+        []
+      ]
+    ]
+  },
+  {
+    "case": "conditional",
+    "messages": [
+      "On call I prefer PagerDuty. Outside work please use Matrix.",
+      "I used to work in Cork. These days I call Ghent home."
+    ],
+    "queries": [
+      [
+        "How do I want to be contacted when on call?",
+        "PagerDuty",
+        []
+      ],
+      [
+        "How should I be contacted outside work?",
+        "Matrix",
+        []
+      ],
+      [
+        "What is my home city?",
+        "Ghent",
+        [
+          "Cork"
+        ]
+      ]
+    ]
+  },
+  {
+    "case": "project-handoff",
+    "messages": [
+      "Shipments leave from Rotterdam.",
+      "The inventory reconciliation job starts at 04:15 UTC.",
+      "We have since moved shipments to Antwerp."
+    ],
+    "queries": [
+      [
+        "Where do shipments leave from?",
+        "Antwerp",
+        [
+          "Rotterdam"
+        ]
+      ],
+      [
+        "When does the inventory reconciliation job start?",
+        "04:15",
+        []
+      ],
+      [
+        "What is the warehouse phone number?",
+        null,
+        []
+      ]
+    ]
+  },
+  {
+    "case": "conditional-correction",
+    "messages": [
+      "I live in Denver.",
+      "I might move to Phoenix.",
+      "I work at Skylark."
+    ],
+    "queries": [
+      [
+        "What city do I live in?",
+        "Denver",
+        [
+          "Phoenix"
+        ]
+      ],
+      [
+        "Where am I employed?",
+        "Skylark",
+        []
+      ],
+      [
+        "Who owns my apartment?",
+        null,
+        []
+      ]
+    ]
+  },
+  {
+    "case": "paraphrased-move",
+    "messages": [
+      "I live in Oslo.",
+      "Our lease in Norway ended. These days I call Ghent home."
+    ],
+    "queries": [
+      [
+        "What city do I live in?",
+        "Ghent",
+        [
+          "Oslo"
+        ]
+      ],
+      [
+        "What city does my sister live in?",
+        null,
+        []
+      ]
+    ]
+  },
+  {
+    "case": "overlapping-subjects",
+    "messages": [
+      "I work at Moonbeam.",
+      "My partner works at Ironvale."
+    ],
+    "queries": [
+      [
+        "Who is my employer?",
+        "Moonbeam",
+        []
+      ],
+      [
+        "What is my manager's name?",
+        null,
+        []
+      ],
+      [
+        "Which company employs my brother?",
+        null,
+        []
+      ]
+    ]
+  }
+]
